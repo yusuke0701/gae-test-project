@@ -4,26 +4,45 @@ import (
 	"context"
 	"gae-test-project/src/model"
 
-	"google.golang.org/appengine/datastore"
+	"go.mercari.io/datastore"
+	"go.mercari.io/datastore/aedatastore"
 )
 
-const UserKindName = "user"
+const UserKindName = "User"
 
+// UserStore は、UserのCRUDを担保する
 type UserStore struct {
-	Context context.Context // appengineのContextを渡す
+	cli datastore.Client
 }
 
+// NewUserStore は、UserStoreを用意する
+func NewUserStore(c context.Context) (*UserStore, error) {
+	cli, err := aedatastore.FromContext(c) // Memo: 2018/12/29 aedatastore であれば cli.Close() を呼び出す必要はない
+	if err != nil {
+		return nil, err
+	}
+	return &UserStore{
+		cli: cli,
+	}, nil
+}
+
+// newKey は、Keyの生成を担当する
+func (store *UserStore) newKey(email string) datastore.Key {
+	return store.cli.NameKey(UserKindName, email, nil)
+}
+
+// Get は、Userを一件取得する
 func (store *UserStore) Get(email string) (*model.User, error) {
-	user := &model.User{}
-	key := datastore.NewKey(store.Context, UserKindName, email, 0, nil)
-	if err := datastore.Get(store.Context, key, user); err != nil {
+	user := model.NewUser(email, "", "", "")
+	if err := store.cli.Get(store.cli.Context(), store.newKey(email), user); err != nil {
 		return nil, err
 	}
 	return user, nil
 }
 
+// List は、Userを複数件取得する
 func (store *UserStore) List(firstName, lastName, address string) ([]*model.User, error) {
-	q := datastore.NewQuery(UserKindName)
+	q := store.cli.NewQuery(UserKindName)
 	if firstName != "" {
 		q = q.Filter("Detail.FirstName =", firstName)
 	}
@@ -35,27 +54,28 @@ func (store *UserStore) List(firstName, lastName, address string) ([]*model.User
 	}
 
 	userList := make([]*model.User, 0)
-	if _, err := q.GetAll(store.Context, &userList); err != nil {
+	if _, err := store.cli.GetAll(store.cli.Context(), q, userList); err != nil {
 		return nil, err
 	}
 	return userList, nil
 }
 
-func (store *UserStore) InsertOrUpdate(user *model.User) error {
+// InsertOrUpdate は、Userを新規作成または更新する
+func (store *UserStore) InsertOrUpdate(email, firstName, lastName, address string) (*model.User, error) {
+	user := model.NewUser(email, firstName, lastName, address)
 	// TODO: insertとupdateを分ける必要が出たらコメントアウトする
 	//if _, err := store.Get(user.Email); err != nil {
 	//	if err != datastore.ErrNoSuchEntity {
 	//		return err
 	//	}
 	//}
-	key := datastore.NewKey(store.Context, UserKindName, user.Email, 0, nil)
-	if _, err := datastore.Put(store.Context, key, user); err != nil {
-		return err
+	if _, err := store.cli.Put(store.cli.Context(), store.newKey(email), user); err != nil {
+		return nil, err
 	}
-	return nil
+	return user, nil
 }
 
+// Delete は、Userを一件削除する
 func (store *UserStore) Delete(email string) error {
-	key := datastore.NewKey(store.Context, UserKindName, email, 0, nil)
-	return datastore.Delete(store.Context, key)
+	return store.cli.Delete(store.cli.Context(), store.newKey(email))
 }

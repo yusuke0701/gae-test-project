@@ -3,7 +3,6 @@ package api
 import (
 	"net/http"
 
-	"gae-test-project/src/model"
 	"gae-test-project/src/store"
 
 	"github.com/gin-gonic/gin"
@@ -30,7 +29,11 @@ func (api *UserAPI) Get(ginC *gin.Context) {
 	email := ginC.Param("email")
 	log.Debugf(appC, "email = %s", email)
 
-	uStore := &store.UserStore{Context: appC}
+	uStore, err := store.NewUserStore(appC)
+	if err != nil {
+		ginC.String(http.StatusInternalServerError, err.Error())
+		return
+	}
 	user, err := uStore.Get(email)
 	if err != nil {
 		ginC.String(http.StatusInternalServerError, err.Error())
@@ -47,7 +50,11 @@ func (api *UserAPI) List(ginC *gin.Context) {
 	lastName := ginC.Query("lastName")
 	address := ginC.Query("address")
 
-	uStore := &store.UserStore{Context: appC}
+	uStore, err := store.NewUserStore(appC)
+	if err != nil {
+		ginC.String(http.StatusInternalServerError, err.Error())
+		return
+	}
 	userList, err := uStore.List(firstName, lastName, address)
 	if err != nil {
 		ginC.String(http.StatusInternalServerError, err.Error())
@@ -81,9 +88,14 @@ func (api *UserAPI) InsertOrUpdate(ginC *gin.Context) {
 		return
 	}
 
-	uStore := &store.UserStore{Context: appC}
-	user := model.NewUser(email, firstName, lastName, address)
-	if err := uStore.InsertOrUpdate(user); err != nil {
+	uStore, err := store.NewUserStore(appC)
+	if err != nil {
+		ginC.String(http.StatusInternalServerError, err.Error())
+		return
+	}
+	user, err := uStore.InsertOrUpdate(email, firstName, lastName, address)
+	if err != nil {
+		log.Errorf(appC, err.Error())
 		ginC.String(http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -96,7 +108,11 @@ func (api *UserAPI) Delete(ginC *gin.Context) {
 
 	email := ginC.Param("email")
 
-	uStore := &store.UserStore{Context: appC}
+	uStore, err := store.NewUserStore(appC)
+	if err != nil {
+		ginC.String(http.StatusInternalServerError, err.Error())
+		return
+	}
 	if err := uStore.Delete(email); err != nil {
 		ginC.String(http.StatusInternalServerError, err.Error())
 		return

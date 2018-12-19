@@ -169,17 +169,44 @@
   version = "v1.1.1"
 
 [[projects]]
+  digest = "1:2726b546358bb7456ed6ba1242e667d86bbe03f106ff5f900e2b2556b5e14894"
+  name = "go.mercari.io/datastore"
+  packages = [
+    ".",
+    "aedatastore",
+    "internal",
+    "internal/c/atomiccache",
+    "internal/c/fields",
+    "internal/shared",
+  ]
+  pruneopts = "UT"
+  revision = "7a323a3747d39b6c9cdf825697d09cb36907d4cb"
+  version = "v1.3.0"
+
+[[projects]]
   branch = "master"
-  digest = "1:b4aa41e0234714b5a30f2c69ea9bf56ecdbc8d269fbe71ab05911e45782b172f"
+  digest = "1:966a499b74c7f59198399fd5288e3ce2b7ca1029ddfde761d790109f2de2f1b0"
   name = "golang.org/x/net"
   packages = [
     "context",
+    "context/ctxhttp",
     "idna",
     "webdav",
     "webdav/internal/xml",
   ]
   pruneopts = "UT"
   revision = "351d144fa1fc0bd934e2408202be0c29f25e35a0"
+
+[[projects]]
+  branch = "master"
+  digest = "1:5276e08fe6a1dfdb65b4f46a2e5d5c9e00be6e499105e441049c3c04a0c83b36"
+  name = "golang.org/x/oauth2"
+  packages = [
+    ".",
+    "internal",
+  ]
+  pruneopts = "UT"
+  revision = "d668ce993890a79bda886613ee587a69dd5da7a6"
 
 [[projects]]
   branch = "master"
@@ -227,7 +254,15 @@
   revision = "fe2443f7b95069e01d0b02159564c1b4d0dfcb5e"
 
 [[projects]]
-  digest = "1:183ea26d4b2778bf7f19efe08dc401d9be8f3e7c0fdd171158af7de400fc9865"
+  branch = "master"
+  digest = "1:56d70480ad3b4b7485fe7d5b56fb3787584b2a22718d72f96f75f35c2ab3d06b"
+  name = "google.golang.org/api"
+  packages = ["iterator"]
+  pruneopts = "UT"
+  revision = "146117f78c63efe78e04021cc321e59fb3c13e50"
+
+[[projects]]
+  digest = "1:a6cbb64ec6df5ce6f29a9bc6efc6a31a6756425730fc11934d93b7a4e4f8b203"
   name = "google.golang.org/appengine"
   packages = [
     ".",
@@ -239,7 +274,9 @@
     "internal/log",
     "internal/modules",
     "internal/remote_api",
+    "internal/urlfetch",
     "log",
+    "urlfetch",
   ]
   pruneopts = "UT"
   revision = "4a4468ece617fc8205e99368fa2200e9d1fad421"
@@ -270,8 +307,9 @@
     "github.com/swaggo/gin-swagger",
     "github.com/swaggo/gin-swagger/swaggerFiles",
     "github.com/swaggo/swag",
+    "go.mercari.io/datastore",
+    "go.mercari.io/datastore/aedatastore",
     "google.golang.org/appengine",
-    "google.golang.org/appengine/datastore",
     "google.golang.org/appengine/log",
   ]
   solver-name = "gps-cdcl"

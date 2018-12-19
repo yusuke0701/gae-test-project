@@ -6,7 +6,7 @@ import "fmt"
 type User struct {
 	Email  string
 	Name   string
-	Detail UserDetail
+	Detail UserDetail `datastore:",flatten"`
 }
 
 // UserDetail は、ユーザーの詳細情報を表す
