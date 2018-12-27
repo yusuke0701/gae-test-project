@@ -1,9 +1,8 @@
-package main
+package gae
 
 import (
 	"net/http"
 
-	_ "gae-test-project/docs"
 	"gae-test-project/src/api"
 
 	"github.com/gin-gonic/gin"

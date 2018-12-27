@@ -263,10 +263,11 @@
   revision = "146117f78c63efe78e04021cc321e59fb3c13e50"
 
 [[projects]]
-  digest = "1:a6cbb64ec6df5ce6f29a9bc6efc6a31a6756425730fc11934d93b7a4e4f8b203"
+  digest = "1:55084ab98d5c629c4788a3a328c7b54bb0743a4d22d9e019a7f35d6e20e94c79"
   name = "google.golang.org/appengine"
   packages = [
     ".",
+    "aetest",
     "datastore",
     "internal",
     "internal/app_identity",
@@ -276,8 +277,10 @@
     "internal/modules",
     "internal/remote_api",
     "internal/urlfetch",
+    "internal/user",
     "log",
     "urlfetch",
+    "user",
   ]
   pruneopts = "UT"
   revision = "4a4468ece617fc8205e99368fa2200e9d1fad421"
@@ -312,6 +315,7 @@
     "go.mercari.io/datastore/aedatastore",
     "go.mercari.io/datastore/boom",
     "google.golang.org/appengine",
+    "google.golang.org/appengine/aetest",
     "google.golang.org/appengine/log",
   ]
   solver-name = "gps-cdcl"
