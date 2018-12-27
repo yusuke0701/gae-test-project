@@ -25,4 +25,5 @@ func initAPI(g *gin.Engine) {
 	// API
 	apiGin := g.Group("/api")
 	api.InitUserAPI(apiGin.Group("/users"))
+	api.InitCommentAPI(apiGin.Group("/comments"))
 }
