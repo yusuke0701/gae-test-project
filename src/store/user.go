@@ -4,15 +4,14 @@ import (
 	"context"
 	"gae-test-project/src/model"
 
-	"go.mercari.io/datastore"
 	"go.mercari.io/datastore/aedatastore"
+	"go.mercari.io/datastore/boom"
 )
-
-const UserKindName = "User"
 
 // UserStore は、UserのCRUDを担保する
 type UserStore struct {
-	cli datastore.Client
+	kindName string
+	b        *boom.Boom
 }
 
 // NewUserStore は、UserStoreを用意する
@@ -21,20 +20,17 @@ func NewUserStore(c context.Context) (*UserStore, error) {
 	if err != nil {
 		return nil, err
 	}
+	b := boom.FromClient(c, cli)
 	return &UserStore{
-		cli: cli,
+		kindName: b.Kind(model.User{}),
+		b:        b,
 	}, nil
-}
-
-// newKey は、Keyの生成を担当する
-func (store *UserStore) newKey(email string) datastore.Key {
-	return store.cli.NameKey(UserKindName, email, nil)
 }
 
 // Get は、Userを一件取得する
 func (store *UserStore) Get(email string) (*model.User, error) {
 	user := model.NewUser(email, "", "", "")
-	if err := store.cli.Get(store.cli.Context(), store.newKey(email), user); err != nil {
+	if err := store.b.Get(user); err != nil {
 		return nil, err
 	}
 	return user, nil
@@ -42,7 +38,7 @@ func (store *UserStore) Get(email string) (*model.User, error) {
 
 // List は、Userを複数件取得する
 func (store *UserStore) List(firstName, lastName, address string) ([]*model.User, error) {
-	q := store.cli.NewQuery(UserKindName)
+	q := store.b.NewQuery(store.kindName)
 	if firstName != "" {
 		q = q.Filter("Detail.FirstName =", firstName)
 	}
@@ -54,7 +50,7 @@ func (store *UserStore) List(firstName, lastName, address string) ([]*model.User
 	}
 
 	userList := make([]*model.User, 0)
-	if _, err := store.cli.GetAll(store.cli.Context(), q, userList); err != nil {
+	if _, err := store.b.GetAll(q, &userList); err != nil {
 		return nil, err
 	}
 	return userList, nil
@@ -62,14 +58,14 @@ func (store *UserStore) List(firstName, lastName, address string) ([]*model.User
 
 // InsertOrUpdate は、Userを新規作成または更新する
 func (store *UserStore) InsertOrUpdate(email, firstName, lastName, address string) (*model.User, error) {
-	user := model.NewUser(email, firstName, lastName, address)
 	// TODO: insertとupdateを分ける必要が出たらコメントアウトする
-	//if _, err := store.Get(user.Email); err != nil {
+	//if _, err := store.Get(email); err != nil {
 	//	if err != datastore.ErrNoSuchEntity {
 	//		return err
 	//	}
 	//}
-	if _, err := store.cli.Put(store.cli.Context(), store.newKey(email), user); err != nil {
+	user := model.NewUser(email, firstName, lastName, address)
+	if _, err := store.b.Put(user); err != nil {
 		return nil, err
 	}
 	return user, nil
@@ -77,5 +73,6 @@ func (store *UserStore) InsertOrUpdate(email, firstName, lastName, address strin
 
 // Delete は、Userを一件削除する
 func (store *UserStore) Delete(email string) error {
-	return store.cli.Delete(store.cli.Context(), store.newKey(email))
+	user := model.NewUser(email, "", "", "")
+	return store.b.Delete(user)
 }

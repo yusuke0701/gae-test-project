@@ -169,11 +169,12 @@
   version = "v1.1.1"
 
 [[projects]]
-  digest = "1:2726b546358bb7456ed6ba1242e667d86bbe03f106ff5f900e2b2556b5e14894"
+  digest = "1:e583fc00497ee3eaf30bde9edf05601f60d5a8668f7fe4c657b3f935ddca03f7"
   name = "go.mercari.io/datastore"
   packages = [
     ".",
     "aedatastore",
+    "boom",
     "internal",
     "internal/c/atomiccache",
     "internal/c/fields",
@@ -309,6 +310,7 @@
     "github.com/swaggo/swag",
     "go.mercari.io/datastore",
     "go.mercari.io/datastore/aedatastore",
+    "go.mercari.io/datastore/boom",
     "google.golang.org/appengine",
     "google.golang.org/appengine/log",
   ]

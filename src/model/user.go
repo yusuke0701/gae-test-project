@@ -4,16 +4,16 @@ import "fmt"
 
 // User は、ユーザーを表す
 type User struct {
-	Email  string
-	Name   string
-	Detail UserDetail `datastore:",flatten"`
+	Email  string     `json:"email" datastore:"-" boom:"id"`
+	Name   string     `json:"name"`
+	Detail UserDetail `json:"detail" datastore:",flatten"`
 }
 
 // UserDetail は、ユーザーの詳細情報を表す
 type UserDetail struct {
-	FirstName string
-	LastName  string
-	Address   string
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+	Address   string `json:"address"`
 }
 
 // NewUser は、ユーザーを作る

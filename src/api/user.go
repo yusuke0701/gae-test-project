@@ -1,9 +1,8 @@
 package api
 
 import (
-	"net/http"
-
 	"gae-test-project/src/store"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"google.golang.org/appengine"
