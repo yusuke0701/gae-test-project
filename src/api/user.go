@@ -12,17 +12,16 @@ import (
 // InitUserAPI は、UserAPIをルーティングに設定する
 func InitUserAPI(g *gin.RouterGroup) {
 	api := &UserAPI{}
-	g.GET(":email", api.Get)
-	g.GET("", api.List)
-	g.PUT("", api.InsertOrUpdate)
-	g.DELETE("", api.Delete)
+	g.GET(":email", api.get)
+	g.GET("", api.list)
+	g.PUT("", api.insertOrUpdate)
+	g.DELETE("", api.delete)
 }
 
 // UserAPI はUserAPIをまとめる
 type UserAPI struct{}
 
-// Get は、User取得API
-func (api *UserAPI) Get(ginC *gin.Context) {
+func (api *UserAPI) get(ginC *gin.Context) {
 	appC := appengine.NewContext(ginC.Request)
 
 	email := ginC.Param("email")
@@ -41,8 +40,7 @@ func (api *UserAPI) Get(ginC *gin.Context) {
 	ginC.JSON(http.StatusOK, user)
 }
 
-// List は、User一覧取得API
-func (api *UserAPI) List(ginC *gin.Context) {
+func (api *UserAPI) list(ginC *gin.Context) {
 	appC := appengine.NewContext(ginC.Request)
 
 	firstName := ginC.Query("firstName")
@@ -62,8 +60,7 @@ func (api *UserAPI) List(ginC *gin.Context) {
 	ginC.JSON(http.StatusOK, userList)
 }
 
-// InsertOrUpdate は、User新規作成または更新API
-func (api *UserAPI) InsertOrUpdate(ginC *gin.Context) {
+func (api *UserAPI) insertOrUpdate(ginC *gin.Context) {
 	appC := appengine.NewContext(ginC.Request)
 
 	email, ok := ginC.GetQuery("email")
@@ -101,8 +98,7 @@ func (api *UserAPI) InsertOrUpdate(ginC *gin.Context) {
 	ginC.JSON(http.StatusOK, user)
 }
 
-// Delete は、User削除API
-func (api *UserAPI) Delete(ginC *gin.Context) {
+func (api *UserAPI) delete(ginC *gin.Context) {
 	appC := appengine.NewContext(ginC.Request)
 
 	email := ginC.Param("email")
