@@ -20,8 +20,7 @@ func init() {
 func initAPI(g *gin.Engine) {
 	g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	// API
-	apiGin := g.Group("/api")
-	api.InitUserAPI(apiGin.Group("/users"))
-	api.InitCommentAPI(apiGin.Group("/comments"))
+	apiGroup := g.Group("/api")
+	api.InitUserAPI(apiGroup.Group("/users"))
+	api.InitCommentAPI(apiGroup.Group("/comments"))
 }
