@@ -263,7 +263,7 @@
   revision = "146117f78c63efe78e04021cc321e59fb3c13e50"
 
 [[projects]]
-  digest = "1:55084ab98d5c629c4788a3a328c7b54bb0743a4d22d9e019a7f35d6e20e94c79"
+  digest = "1:c7d6e627444590198f488977f1ad56dcacb5d4e4c822c20237eb173991dc8829"
   name = "google.golang.org/appengine"
   packages = [
     ".",
@@ -276,9 +276,11 @@
     "internal/log",
     "internal/modules",
     "internal/remote_api",
+    "internal/taskqueue",
     "internal/urlfetch",
     "internal/user",
     "log",
+    "taskqueue",
     "urlfetch",
     "user",
   ]
@@ -317,6 +319,7 @@
     "google.golang.org/appengine",
     "google.golang.org/appengine/aetest",
     "google.golang.org/appengine/log",
+    "google.golang.org/appengine/taskqueue",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

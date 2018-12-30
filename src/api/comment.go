@@ -12,16 +12,15 @@ import (
 
 // InitCommentAPI は、CommentAPIをルーティングに設定する
 func InitCommentAPI(g *gin.RouterGroup) {
-	api := &CommentAPI{}
+	api := &commentAPI{}
 	g.GET(":email/:id", api.get)
 	g.GET(":email", api.listByEmail)
 	g.PUT("", api.insert)
 }
 
-// CommentAPI はCommentAPIをまとめる
-type CommentAPI struct{}
+type commentAPI struct{}
 
-func (api *CommentAPI) get(ginC *gin.Context) {
+func (api *commentAPI) get(ginC *gin.Context) {
 	appC := appengine.NewContext(ginC.Request)
 
 	email := ginC.Param("email")
@@ -48,7 +47,7 @@ func (api *CommentAPI) get(ginC *gin.Context) {
 	ginC.JSON(http.StatusOK, user)
 }
 
-func (api *CommentAPI) listByEmail(ginC *gin.Context) {
+func (api *commentAPI) listByEmail(ginC *gin.Context) {
 	appC := appengine.NewContext(ginC.Request)
 
 	email := ginC.Param("email")
@@ -67,7 +66,7 @@ func (api *CommentAPI) listByEmail(ginC *gin.Context) {
 	ginC.JSON(http.StatusOK, user)
 }
 
-func (api *CommentAPI) insert(ginC *gin.Context) {
+func (api *commentAPI) insert(ginC *gin.Context) {
 	appC := appengine.NewContext(ginC.Request)
 
 	email, ok := ginC.GetQuery("email")

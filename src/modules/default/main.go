@@ -23,4 +23,7 @@ func initAPI(g *gin.Engine) {
 	apiGroup := g.Group("/api")
 	api.InitUserAPI(apiGroup.Group("/users"))
 	api.InitCommentAPI(apiGroup.Group("/comments"))
+
+	tqGroup := g.Group("/tq")
+	api.InitTQAPI(tqGroup)
 }
