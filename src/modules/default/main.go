@@ -11,19 +11,16 @@ import (
 
 func init() {
 	g := gin.New()
+	g.AppEngine = true
 
-	initAPI(g)
+	g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	initAPI(g.Group("/api"))
+	api.InitTQAPI(g.Group("/tq"))
 
 	http.Handle("/", g)
 }
 
-func initAPI(g *gin.Engine) {
-	g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-
-	apiGroup := g.Group("/api")
-	api.InitUserAPI(apiGroup.Group("/users"))
-	api.InitCommentAPI(apiGroup.Group("/comments"))
-
-	tqGroup := g.Group("/tq")
-	api.InitTQAPI(tqGroup)
+func initAPI(g *gin.RouterGroup) {
+	api.InitUserAPI(g.Group("/users"))
+	api.InitCommentAPI(g.Group("/comments"))
 }
