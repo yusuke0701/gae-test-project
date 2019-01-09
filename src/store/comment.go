@@ -78,3 +78,12 @@ func (store *CommentStore) Update(id int64, email, title, body string) (*model.C
 	}
 	return comment, nil
 }
+
+// Delete は、Commentを削除する
+func (store *CommentStore) Delete(id int64) error {
+	comment, err := model.NewComment(store.b, "", id, "", "")
+	if err != nil {
+		return err
+	}
+	return store.b.Delete(comment)
+}

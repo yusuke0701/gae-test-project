@@ -17,6 +17,7 @@ func InitCommentAPI(g *gin.RouterGroup) {
 	g.GET(":email", api.listByEmail)
 	g.PUT("", api.insert)
 	g.POST(":id", api.update)
+	g.DELETE(":id", api.delete)
 }
 
 type commentAPI struct{}
@@ -137,4 +138,26 @@ func (api *commentAPI) update(ginC *gin.Context) {
 		return
 	}
 	ginC.JSON(http.StatusOK, user)
+}
+
+func (api *commentAPI) delete(ginC *gin.Context) {
+	appC := appengine.NewContext(ginC.Request)
+
+	stringID := ginC.Param("id")
+	id, err := strconv.ParseInt(stringID, 10, 64)
+	if err != nil {
+		ginC.String(http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	cStore, err := store.NewCommentStore(appC)
+	if err != nil {
+		ginC.String(http.StatusInternalServerError, err.Error())
+		return
+	}
+	if err := cStore.Delete(id); err != nil {
+		ginC.String(http.StatusInternalServerError, err.Error())
+		return
+	}
+	ginC.JSON(http.StatusOK, "deleted")
 }
