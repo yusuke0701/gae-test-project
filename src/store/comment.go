@@ -66,3 +66,15 @@ func (store *CommentStore) Insert(email, title, body string) (*model.Comment, er
 	}
 	return comment, nil
 }
+
+// Update は、Commentを更新する
+func (store *CommentStore) Update(id int64, email, title, body string) (*model.Comment, error) {
+	comment, err := model.NewComment(store.b, email, id, title, body)
+	if err != nil {
+		return nil, err
+	}
+	if _, err := store.b.Put(comment); err != nil {
+		return nil, err
+	}
+	return comment, nil
+}

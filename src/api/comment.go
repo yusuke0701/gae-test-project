@@ -16,6 +16,7 @@ func InitCommentAPI(g *gin.RouterGroup) {
 	g.GET(":email/:id", api.get)
 	g.GET(":email", api.listByEmail)
 	g.PUT("", api.insert)
+	g.POST(":id", api.update)
 }
 
 type commentAPI struct{}
@@ -91,6 +92,45 @@ func (api *commentAPI) insert(ginC *gin.Context) {
 		return
 	}
 	user, err := cStore.Insert(email, title, body)
+	if err != nil {
+		log.Errorf(appC, err.Error())
+		ginC.String(http.StatusInternalServerError, err.Error())
+		return
+	}
+	ginC.JSON(http.StatusOK, user)
+}
+
+func (api *commentAPI) update(ginC *gin.Context) {
+	appC := appengine.NewContext(ginC.Request)
+
+	stringID := ginC.Param("id")
+	id, err := strconv.ParseInt(stringID, 10, 64)
+	if err != nil {
+		ginC.String(http.StatusInternalServerError, err.Error())
+		return
+	}
+	email, ok := ginC.GetQuery("email")
+	if !ok {
+		ginC.String(http.StatusBadRequest, "email is required")
+		return
+	}
+	title, ok := ginC.GetQuery("title")
+	if !ok {
+		ginC.String(http.StatusBadRequest, "title is required")
+		return
+	}
+	body, ok := ginC.GetQuery("body")
+	if !ok {
+		ginC.String(http.StatusBadRequest, "body is required")
+		return
+	}
+
+	cStore, err := store.NewCommentStore(appC)
+	if err != nil {
+		ginC.String(http.StatusInternalServerError, err.Error())
+		return
+	}
+	user, err := cStore.Update(id, email, title, body)
 	if err != nil {
 		log.Errorf(appC, err.Error())
 		ginC.String(http.StatusInternalServerError, err.Error())
