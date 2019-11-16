@@ -1,4 +1,0 @@
-queue:
-  - name: tqSample
-    rate: 100/s
-    bucket_size: 100

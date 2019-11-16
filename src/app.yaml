@@ -1,0 +1,4 @@
+runtime: go112
+
+env_variables:
+  PROJECT_ID: "hoge-hoge-123456789"
