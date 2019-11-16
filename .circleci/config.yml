@@ -1,0 +1,79 @@
+version: 2.1
+
+# orbs
+orbs:
+  # https://circleci.com/orbs/registry/orb/circleci/gcp-cli
+  gcp-cli: circleci/gcp-cli@1.8.3
+
+# executors
+executors:
+  go112-executor:
+    working_directory: ~/app
+    docker:
+      - image: circleci/golang:1.12
+  gcloud-executor:
+    working_directory: ~/app
+    docker:
+      - image: google/cloud-sdk:latest
+
+# commands
+commands:
+  gcp_cli_initialize:
+    description: "gcp cli initialize"
+    steps:
+      - gcp-cli/initialize:
+          gcloud-service-key: GCLOUD_SERVICE_KEY
+          google-compute-zone: GOOGLE_COMPUTE_ZONE
+          google-project-id: GOOGLE_PROJECT_ID
+
+# jobs
+jobs:
+  lint-server:
+    executor: go112-executor
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - 'go-mod-{{ .Environment.CACHE_KEY }}-{{ checksum "src/go.mod" }}'
+      - run:
+          name: download go modules
+          command: go mod download
+          working_directory: src
+      - save_cache:
+          key: 'go-mod-{{ .Environment.CACHE_KEY }}-{{ checksum "src/go.mod" }}'
+          paths:
+            - /go/pkg/mod
+      - run:
+          name: Install GolangCI-Lint
+          command: curl -sfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh| sh -s -- -b $(go env GOPATH)/bin v1.21.0
+      - run:
+          name: Run GolangCI-Lint
+          command: golangci-lint run --disable-all --enable=goimports --enable=golint --enable=govet --enable=errcheck --enable=staticcheck ./...
+          working_directory: src
+
+  deploy:
+    executor: gcloud-executor
+    steps:
+      - run: gcloud --version
+      - checkout
+      - run:
+          name: deploy
+          working_directory: src
+          command: |
+            PROJECT=$(gcloud config list --format="value(core.project)")
+            VERSION=$(git rev-parse --short=8 HEAD)
+            gcloud app deploy --quiet app.yaml --project=$PROJECT --version=$VERSION
+
+# workflows
+workflows:
+  build:
+    jobs:
+      - lint-server
+      - deploy:
+          pre-steps:
+            - gcp_cli_initialize
+          requires:
+            - lint-server
+          filters:
+            branches:
+              only: gae-go112
