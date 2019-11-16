@@ -22,7 +22,7 @@ func insertComment(ctx *gin.Context) {
 	}
 	comment := &model.Comment{ID: "10", Body: body}
 
-	if err := store.Comment.Insert(ctx.Request.Context(), comment); err != nil {
+	if err := (&store.Comment{}).Insert(ctx.Request.Context(), comment); err != nil {
 		ctx.String(http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -32,7 +32,7 @@ func insertComment(ctx *gin.Context) {
 func getComment(ctx *gin.Context) {
 	commentID := ctx.Param("id")
 
-	comment, err := store.Comment.Get(ctx.Request.Context(), commentID)
+	comment, err := (&store.Comment{}).Get(ctx.Request.Context(), commentID)
 	if err != nil {
 		ctx.String(http.StatusInternalServerError, err.Error())
 		return

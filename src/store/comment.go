@@ -9,24 +9,18 @@ import (
 )
 
 // Comment は、コメントのDB操作を担保する
-var Comment *comment
+type Comment struct{}
 
-func init() {
-	Comment = &comment{
-		kind: "comment",
-	}
+func (cStore *Comment) kind() string {
+	return "comment"
 }
 
-type comment struct {
-	kind string
-}
-
-func (cStore *comment) newKey(id string) *datastore.Key {
-	return datastore.NameKey(cStore.kind, id, nil)
+func (cStore *Comment) newKey(id string) *datastore.Key {
+	return datastore.NameKey(cStore.kind(), id, nil)
 }
 
 // Insert は、コメントを一件保存する
-func (cStore *comment) Insert(ctx context.Context, c *model.Comment) error {
+func (cStore *Comment) Insert(ctx context.Context, c *model.Comment) error {
 	if _, err := util.DatastoreClient.Put(ctx, cStore.newKey(c.ID), c); err != nil {
 		return err
 	}
@@ -34,7 +28,7 @@ func (cStore *comment) Insert(ctx context.Context, c *model.Comment) error {
 }
 
 // Get は、コメントを一件取得する
-func (cStore *comment) Get(ctx context.Context, id string) (c *model.Comment, err error) {
+func (cStore *Comment) Get(ctx context.Context, id string) (c *model.Comment, err error) {
 	err = util.DatastoreClient.Get(ctx, cStore.newKey(id), c)
 	return
 }
