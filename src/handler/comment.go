@@ -20,22 +20,22 @@ func insertComment(ctx *gin.Context) {
 		ctx.String(http.StatusBadRequest, "body is required")
 		return
 	}
-	commnet := &model.Comment{ID: "10", Body: body}
+	comment := &model.Comment{ID: "10", Body: body}
 
-	if err := store.Comment.Insert(ctx.Request.Context(), commnet); err != nil {
+	if err := store.Comment.Insert(ctx.Request.Context(), comment); err != nil {
 		ctx.String(http.StatusInternalServerError, err.Error())
 		return
 	}
-	ctx.JSON(http.StatusOK, commnet)
+	ctx.JSON(http.StatusOK, comment)
 }
 
 func getComment(ctx *gin.Context) {
 	commentID := ctx.Param("id")
 
-	commnet, err := store.Comment.Get(ctx.Request.Context(), commentID)
+	comment, err := store.Comment.Get(ctx.Request.Context(), commentID)
 	if err != nil {
 		ctx.String(http.StatusInternalServerError, err.Error())
 		return
 	}
-	ctx.JSON(http.StatusOK, commnet)
+	ctx.JSON(http.StatusOK, comment)
 }

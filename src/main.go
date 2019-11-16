@@ -10,8 +10,8 @@ import (
 func main() {
 	router := gin.Default()
 	{
-		g := router.Group("/api")
-		handler.Comments(g.Group("/commnets"))
+		api := router.Group("/api")
+		handler.Comments(api.Group("/comments"))
 	}
 	if err := router.Run(":8080"); err != nil {
 		log.Fatalf("Failed to create client: %v", err)
