@@ -10,19 +10,19 @@ import (
 
 // Comments is handler bundle
 func Comments(g *gin.RouterGroup) {
-	g.PUT("", insertComment)
+	g.POST("", insertComment)
 	g.GET("/:id", getComment)
+	g.PUT("/:id", updateComment)
 }
 
 func insertComment(ctx *gin.Context) {
-	body, ok := ctx.GetQuery("body")
-	if !ok {
-		ctx.String(http.StatusBadRequest, "body is required")
+	var comment *model.Comment
+	if err := ctx.Bind(comment); err != nil {
+		ctx.String(http.StatusBadRequest, err.Error())
 		return
 	}
-	comment := &model.Comment{ID: "10", Body: body}
 
-	if err := (&store.Comment{}).Insert(ctx.Request.Context(), comment); err != nil {
+	if err := (&store.Comment{}).InsertOrUpadte(ctx.Request.Context(), comment); err != nil {
 		ctx.String(http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -34,6 +34,23 @@ func getComment(ctx *gin.Context) {
 
 	comment, err := (&store.Comment{}).Get(ctx.Request.Context(), commentID)
 	if err != nil {
+		ctx.String(http.StatusInternalServerError, err.Error())
+		return
+	}
+	ctx.JSON(http.StatusOK, comment)
+}
+
+func updateComment(ctx *gin.Context) {
+	var comment *model.Comment
+	if err := ctx.Bind(comment); err != nil {
+		ctx.String(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	// commentID := ctx.Param("id")
+	// TODO: 現状だとInsertと処理の違いがない。取得して値を使いまわす部分があってもよいかな
+
+	if err := (&store.Comment{}).InsertOrUpadte(ctx.Request.Context(), comment); err != nil {
 		ctx.String(http.StatusInternalServerError, err.Error())
 		return
 	}

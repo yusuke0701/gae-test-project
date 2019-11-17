@@ -19,8 +19,8 @@ func (cStore *Comment) newKey(id string) *datastore.Key {
 	return datastore.NameKey(cStore.kind(), id, nil)
 }
 
-// Insert は、コメントを一件保存する
-func (cStore *Comment) Insert(ctx context.Context, c *model.Comment) error {
+// InsertOrUpadte は、コメントを一件保存する
+func (cStore *Comment) InsertOrUpadte(ctx context.Context, c *model.Comment) error {
 	if _, err := util.DatastoreClient.Put(ctx, cStore.newKey(c.ID), c); err != nil {
 		return err
 	}
