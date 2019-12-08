@@ -32,7 +32,7 @@ func GetSignedURL(ctx context.Context, method SignedURLType, bucketName, fileNam
 		GoogleAccessID: ServiceAccountName,
 		Method:         string(method),
 		Expires:        time.Now().Add(15 * time.Minute),
-		ContentType:    contentTyp,
+		ContentType:    contentType,
 		SignBytes: func(b []byte) ([]byte, error) {
 			resp, err := iamService.Projects.ServiceAccounts.SignBlob(
 				ServiceAccountID,
