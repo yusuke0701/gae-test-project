@@ -74,6 +74,3 @@ workflows:
             - gcp_cli_initialize
           requires:
             - lint-server
-          filters:
-            branches:
-              only: master
