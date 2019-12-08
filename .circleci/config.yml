@@ -76,4 +76,4 @@ workflows:
             - lint-server
           filters:
             branches:
-              only: gae-go112
+              only: master
