@@ -1,1 +1,5 @@
 runtime: go112
+
+handlers:
+- url: /
+  static_dir: client
