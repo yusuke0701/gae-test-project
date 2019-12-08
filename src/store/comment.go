@@ -2,8 +2,8 @@ package store
 
 import (
 	"context"
+	"gae-test-project/connection"
 	"gae-test-project/model"
-	"gae-test-project/util"
 
 	"cloud.google.com/go/datastore"
 )
@@ -21,7 +21,7 @@ func (cStore *Comment) newKey(id string) *datastore.Key {
 
 // InsertOrUpadte は、コメントを一件保存する
 func (cStore *Comment) InsertOrUpadte(ctx context.Context, c *model.Comment) error {
-	if _, err := util.DatastoreClient.Put(ctx, cStore.newKey(c.ID), c); err != nil {
+	if _, err := connection.DatastoreClient.Put(ctx, cStore.newKey(c.ID), c); err != nil {
 		return err
 	}
 	return nil
@@ -29,6 +29,6 @@ func (cStore *Comment) InsertOrUpadte(ctx context.Context, c *model.Comment) err
 
 // Get は、コメントを一件取得する
 func (cStore *Comment) Get(ctx context.Context, id string) (c *model.Comment, err error) {
-	err = util.DatastoreClient.Get(ctx, cStore.newKey(id), c)
+	err = connection.DatastoreClient.Get(ctx, cStore.newKey(id), c)
 	return
 }

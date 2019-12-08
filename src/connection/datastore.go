@@ -1,9 +1,9 @@
-package util
+package connection
 
 import (
 	"context"
+	"gae-test-project/util"
 	"log"
-	"os"
 
 	"cloud.google.com/go/datastore"
 )
@@ -13,9 +13,8 @@ var DatastoreClient *datastore.Client
 
 func init() {
 	ctx := context.Background()
-	projectID := os.Getenv("PROJECT_ID")
 
-	client, err := datastore.NewClient(ctx, projectID)
+	client, err := datastore.NewClient(ctx, util.ProjectID)
 	if err != nil {
 		log.Fatalf("Failed to create client: %v", err)
 	}
