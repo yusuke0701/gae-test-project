@@ -34,13 +34,13 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - 'go-mod-{{ .Environment.CACHE_KEY }}-{{ checksum "src/go.mod" }}'
+            - 'go-mod-{{ .Environment.CACHE_KEY }}-{{ checksum "server/go.mod" }}'
       - run:
           name: download go modules
           command: go mod download
-          working_directory: src
+          working_directory: server
       - save_cache:
-          key: 'go-mod-{{ .Environment.CACHE_KEY }}-{{ checksum "src/go.mod" }}'
+          key: 'go-mod-{{ .Environment.CACHE_KEY }}-{{ checksum "server/go.mod" }}'
           paths:
             - /go/pkg/mod
       - run:
@@ -49,7 +49,7 @@ jobs:
       - run:
           name: Run GolangCI-Lint
           command: golangci-lint run --disable-all --enable=goimports --enable=golint --enable=govet --enable=errcheck --enable=staticcheck ./...
-          working_directory: src
+          working_directory: server
 
   deploy:
     executor: gcloud-executor
@@ -58,7 +58,7 @@ jobs:
       - checkout
       - run:
           name: deploy
-          working_directory: src
+          working_directory: server
           command: |
             PROJECT=$(gcloud config list --format="value(core.project)")
             VERSION=$(git rev-parse --short=8 HEAD)
