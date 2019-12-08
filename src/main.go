@@ -3,7 +3,7 @@ package main
 import (
 	_ "gae-test-project/connection"
 	"gae-test-project/handler"
-	_ "get-test-project/util"
+	_ "gae-test-project/util"
 	"log"
 
 	"github.com/gin-gonic/gin"
