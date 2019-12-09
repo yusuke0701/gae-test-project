@@ -7,14 +7,12 @@
 </template>
 
 <script>
-import Test from "./components/Test.vue";
-import HelloWorld from "./components/HelloWorld.vue";
+import SignedURL from "./components/SignedURL.vue";
 
 export default {
   name: "app",
   components: {
-    Test,
-    HelloWorld
+    SignedURL
   }
 };
 </script>
