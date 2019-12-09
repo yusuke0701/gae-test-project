@@ -14,6 +14,7 @@ func main() {
 	{
 		api := router.Group("/api")
 		handler.Comments(api.Group("/comments"))
+		handler.SignedURLs(api.Group("/url"))
 	}
 	if err := router.Run(":8080"); err != nil {
 		log.Fatalf("Failed to create client: %v", err)
