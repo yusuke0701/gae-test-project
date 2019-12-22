@@ -21,7 +21,7 @@ export default {
         .get(apiURL + "/" + this.csvFileName)
         .then(response => response.text())
         .then(textData => window.open(textData))
-        .catch(error => console.log(error));
+        .catch(error => window.alert(error));
     }
   }
 };
