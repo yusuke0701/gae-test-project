@@ -13,14 +13,17 @@ executors:
     working_directory: ~/app
     docker:
       - image: circleci/golang:1.12
+    resource_class: small
   node-executor:
     working_directory: ~/app
     docker:
       - image: circleci/node:10.16.3
+    resource_class: small
   gcloud-executor:
     working_directory: ~/app
     docker:
       - image: google/cloud-sdk:latest
+    resource_class: small
 
 # commands
 commands:
