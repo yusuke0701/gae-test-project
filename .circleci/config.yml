@@ -2,6 +2,8 @@ version: 2.1
 
 # orbs
 orbs:
+  # https://circleci.com/orbs/registry/orb/circleci/node
+  node: circleci/node@1.1.6
   # https://circleci.com/orbs/registry/orb/circleci/gcp-cli
   gcp-cli: circleci/gcp-cli@1.8.3
 
@@ -11,6 +13,10 @@ executors:
     working_directory: ~/app
     docker:
       - image: circleci/golang:1.12
+  node-executor:
+    working_directory: ~/app
+    docker:
+      - image: circleci/node:10.16.3
   gcloud-executor:
     working_directory: ~/app
     docker:
@@ -28,7 +34,7 @@ commands:
 
 # jobs
 jobs:
-  lint-server:
+  build-server:
     executor: go112-executor
     steps:
       - checkout
@@ -51,15 +57,33 @@ jobs:
           command: golangci-lint run --disable-all --enable=goimports --enable=golint --enable=govet --enable=errcheck --enable=staticcheck ./...
           working_directory: server
 
+  build-client:
+    executor: node-executor
+    steps:
+      - checkout
+      - node/with-cache:
+          cache-key: "client/package-lock.json"
+          cache-version: "{{ .Environment.CACHE_KEY }}"
+          dir: "~/.npm"
+          steps:
+            - run:
+                working_directory: client
+                command: npm ci
+          use-strict-cache: false
+      - run:
+          name: lint
+          command: npm run lint
+          working_directory: client
+      - run:
+          name: build
+          command: npm run build
+          working_directory: client
+
   deploy:
     executor: gcloud-executor
     steps:
       - run: gcloud --version
       - checkout
-      - run:
-          name: client-build
-          working_directory: client
-          command: npm run build
       - run:
           name: deploy
           working_directory: server
@@ -72,9 +96,11 @@ jobs:
 workflows:
   build:
     jobs:
-      - lint-server
+      - build-server
+      - build-client
       - deploy:
           pre-steps:
             - gcp_cli_initialize
           requires:
-            - lint-server
+            - build-server
+            - build-client
