@@ -81,12 +81,18 @@ jobs:
           name: build
           command: npm run build
           working_directory: client
+      - persist_to_workspace:
+          root: server/static
+          paths:
+            - .
 
   deploy:
     executor: gcloud-executor
     steps:
       - run: gcloud --version
       - checkout
+      - attach_workspace:
+          at: server/static
       - run:
           name: deploy
           working_directory: server
