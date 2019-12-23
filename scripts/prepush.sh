@@ -1,7 +1,7 @@
 #! /bin/sh -eux
 
 cd `dirname $0`
-cd ../src
+cd ../server
 
 goimports -w ./..
 golint ./..
