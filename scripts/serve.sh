@@ -3,8 +3,7 @@
 cd `dirname $0`
 
 cd ../client
-npm run lint
+npm run build
 
 cd ../server
-goimports -w ./..
-golint ./..
+gin run main.go
