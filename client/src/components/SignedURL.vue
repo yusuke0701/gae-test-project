@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import { getURLToCSVDonwload } from "../service/signedurl";
 export default {
   name: "SignedURL",
   data: function() {
@@ -16,11 +16,14 @@ export default {
   },
   methods: {
     downlaodCSV: function() {
-      const apiURL = "/api/url/csv-download";
-      axios
-        .get(apiURL + "/" + this.csvFileName)
-        .then(response => response.text())
-        .then(textData => window.open(textData))
+      getURLToCSVDonwload(this.csvFileName)
+        .then(res => {
+          if (res.status === 200) {
+            res.text().then(data => window.open(data));
+          } else {
+            res.text().then(data => window.alert(data));
+          }
+        })
         .catch(error => window.alert(error));
     }
   }

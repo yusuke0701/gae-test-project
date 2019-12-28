@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import Home from './components/Home'
 import Page1 from './components/Page1'
 import Page2 from './components/Page2'
+import SignedURL from './components/SignedURL'
 
 Vue.use(Router)
 
@@ -25,6 +26,11 @@ export default new Router({
             path: '/page2',
             name: 'page2',
             component: Page2
+        },
+        {
+            path: '/urls',
+            name: 'signed-url',
+            component: SignedURL
         }
     ]
 })
