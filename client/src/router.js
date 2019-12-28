@@ -1,9 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import Home from './components/Home'
-import Page1 from './components/Page1'
-import Page2 from './components/Page2'
+import Comments from './components/Comments'
 import SignedURL from './components/SignedURL'
 
 Vue.use(Router)
@@ -13,23 +11,13 @@ export default new Router({
     base: process.env.BASE_URL,
     routes: [
         {
-            path: '/',      // このパスにアクセスしたら
-            name: 'home',
-            component: Home // このコンポーネントを呼ぶ
-        },
-        {
-            path: '/page1',
-            name: 'page1',
-            component: Page1
-        },
-        {
-            path: '/page2',
-            name: 'page2',
-            component: Page2
+            path: '/',
+            name: 'コメント一覧画面',
+            component: Comments
         },
         {
             path: '/urls',
-            name: 'signed-url',
+            name: '署名付きURL',
             component: SignedURL
         }
     ]
