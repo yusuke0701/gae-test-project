@@ -19,7 +19,7 @@ func main() {
 		handler.Comments(api.Group("/comments"))
 		handler.SignedURLs(api.Group("/url"))
 	}
-	router.Static("/", "./static")
+	router.Static("/static", "./static")
 
 	if err := router.Run(":8080"); err != nil {
 		log.Fatalf("Failed to create client: %v", err)

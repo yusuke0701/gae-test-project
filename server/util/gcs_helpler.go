@@ -14,7 +14,7 @@ var iamService *iam.Service
 
 func init() {
 	var err error
-	iamService, err = iam.NewService(context.Background(), nil)
+	iamService, err = iam.NewService(context.Background())
 	if err != nil {
 		log.Fatal(err)
 	}
