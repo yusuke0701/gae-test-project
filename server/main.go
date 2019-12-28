@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	_ "gae-test-project/connection"
 	"gae-test-project/handler"
 	_ "gae-test-project/util"
@@ -9,13 +10,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+const apiVersion = "v1"
+
 func main() {
 	router := gin.Default()
 	{
-		api := router.Group("/api")
+		api := router.Group(fmt.Sprintf("/api/%s", apiVersion))
 		handler.Comments(api.Group("/comments"))
 		handler.SignedURLs(api.Group("/url"))
 	}
+	router.Static("/", "./static")
+
 	if err := router.Run(":8080"); err != nil {
 		log.Fatalf("Failed to create client: %v", err)
 	}

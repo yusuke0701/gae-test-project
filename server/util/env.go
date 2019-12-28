@@ -28,7 +28,7 @@ func init() {
 
 	ServiceAccountID = fmt.Sprintf(
 		"projects/%s/serviceAccounts/%s",
-		os.Getenv("GOOGLE_CLOUD_PROJECT"),
+		ProjectID,
 		ServiceAccountName,
 	)
 
@@ -38,13 +38,13 @@ func init() {
 }
 
 func checkEnv() error {
-	if ProjectID != "" {
+	if ProjectID == "" {
 		return errors.New("プロジェクトID が空です")
 	}
-	if ServiceAccountName != "" {
+	if ServiceAccountName == "" {
 		return errors.New("サービスアカウント名 が空です")
 	}
-	if ServiceAccountID != "" {
+	if ServiceAccountID == "" {
 		return errors.New("サービスアカウントID が空です")
 	}
 	return nil
