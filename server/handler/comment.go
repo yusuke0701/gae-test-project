@@ -12,6 +12,7 @@ import (
 func Comments(g *gin.RouterGroup) {
 	g.POST("", insertComment)
 	g.GET("/:id", getComment)
+	g.GET("", listComment)
 	g.PUT("/:id", updateComment)
 }
 
@@ -38,6 +39,15 @@ func getComment(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(http.StatusOK, comment)
+}
+
+func listComment(ctx *gin.Context) {
+	comments, err := (&store.Comment{}).List(ctx.Request.Context())
+	if err != nil {
+		ctx.String(http.StatusInternalServerError, err.Error())
+		return
+	}
+	ctx.JSON(http.StatusOK, comments)
 }
 
 func updateComment(ctx *gin.Context) {
