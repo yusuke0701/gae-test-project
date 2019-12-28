@@ -1,5 +1,5 @@
 runtime: go112
 
 handlers:
-- url: /
+- url: ./static
   static_dir: static
