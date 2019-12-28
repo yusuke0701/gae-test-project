@@ -1,0 +1,6 @@
+dispatch:
+  - url: "*/api/*"
+    service: backend
+
+  - url: "hoge-hoge-123456789.appspot.com/*"
+    service: default

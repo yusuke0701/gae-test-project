@@ -1,6 +1,7 @@
 runtime: go113
 
-main: ./modules/default
+service: backend
+main: ./modules/backend
 
 env_variables:
   GOOGLE_CLOUD_PROJECT: "hoge-hoge-123456789"

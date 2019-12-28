@@ -99,7 +99,7 @@ jobs:
           command: |
             PROJECT=$(gcloud config list --format="value(core.project)")
             VERSION=$(git rev-parse --short=8 HEAD)
-            gcloud app deploy --quiet app.yaml --project=$PROJECT --version=$VERSION
+            gcloud app deploy --quiet app.yaml backend.yaml modules/dispatch.yaml --project=$PROJECT --version=$VERSION
 
 # workflows
 workflows:
