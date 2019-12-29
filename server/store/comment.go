@@ -35,6 +35,7 @@ func (cStore *Comment) Get(ctx context.Context, id string) (c *model.Comment, er
 
 // List は、コメントを一覧取得する
 func (cStore *Comment) List(ctx context.Context) (cs []*model.Comment, err error) {
-	_, err = connection.DatastoreClient.GetAll(ctx, datastore.NewQuery("Post"), &cs)
+	q := datastore.NewQuery(cStore.kind())
+	_, err = connection.DatastoreClient.GetAll(ctx, q, &cs)
 	return
 }

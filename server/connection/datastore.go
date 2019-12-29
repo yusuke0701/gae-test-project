@@ -2,7 +2,6 @@ package connection
 
 import (
 	"context"
-	"gae-test-project/util"
 
 	"cloud.google.com/go/datastore"
 )
@@ -12,8 +11,8 @@ var DatastoreClient *datastore.Client
 
 type DataStore struct{}
 
-func (d DataStore) Open() (err error) {
+func (d DataStore) Open(projectID string) (err error) {
 	ctx := context.Background()
-	DatastoreClient, err = datastore.NewClient(ctx, util.ProjectID)
+	DatastoreClient, err = datastore.NewClient(ctx, projectID)
 	return
 }

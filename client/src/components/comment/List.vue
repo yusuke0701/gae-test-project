@@ -15,9 +15,9 @@ export default {
     getAllComment()
       .then(res => {
         if (res.status === 200) {
-          res.json().then(jsonData => (this.commentList = jsonData));
+          this.commentList = res.data;
         } else {
-          res.text().then(data => window.alert(data));
+          window.alert(res.data);
         }
       })
       .catch(error => window.alert(error));

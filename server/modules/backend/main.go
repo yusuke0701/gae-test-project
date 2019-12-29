@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"gae-test-project/connection"
 	"gae-test-project/handler"
-	_ "gae-test-project/util"
+	"gae-test-project/util"
 	"log"
 
 	"github.com/gin-gonic/gin"
@@ -23,7 +23,7 @@ func main() {
 
 	// コネクション
 	{
-		if err := (connection.DataStore{}).Open(); err != nil {
+		if err := (connection.DataStore{}).Open(util.ProjectID); err != nil {
 			log.Fatalf("Failed to connect datastore: %v", err)
 		}
 		if err := (connection.IAM{}).Open(); err != nil {
