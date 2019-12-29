@@ -17,7 +17,7 @@ func Comments(g *gin.RouterGroup) {
 }
 
 func insertComment(ctx *gin.Context) {
-	var comment *model.Comment
+	comment := new(model.Comment)
 	if err := ctx.Bind(comment); err != nil {
 		ctx.String(http.StatusBadRequest, err.Error())
 		return
@@ -51,7 +51,7 @@ func listComment(ctx *gin.Context) {
 }
 
 func updateComment(ctx *gin.Context) {
-	var comment *model.Comment
+	comment := new(model.Comment)
 	if err := ctx.Bind(comment); err != nil {
 		ctx.String(http.StatusBadRequest, err.Error())
 		return
