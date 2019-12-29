@@ -11,11 +11,11 @@ export default {
   data: function() {
     return { commentList: [] };
   },
-  created() {
+  mounted() {
     getAllComment()
       .then(res => {
         if (res.status === 200) {
-          res.json.then(jsonData => (this.commentList = jsonData));
+          res.json().then(jsonData => (this.commentList = jsonData));
         } else {
           res.text().then(data => window.alert(data));
         }
