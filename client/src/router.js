@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import Comments from './components/Comments'
+import CommentList from './components/comment/List'
 import SignedURL from './components/SignedURL'
 
 Vue.use(Router)
@@ -13,7 +13,7 @@ export default new Router({
         {
             path: '/',
             name: 'コメント一覧画面',
-            component: Comments
+            component: CommentList
         },
         {
             path: '/urls',

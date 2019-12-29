@@ -7,7 +7,7 @@
 <script>
 import { getAllComment } from "../../service/comments";
 export default {
-  name: "Comment list",
+  name: "CommentList",
   data: function() {
     return { commentList: [] };
   },
