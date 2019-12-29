@@ -8,3 +8,4 @@ npm run lint
 cd ../server
 goimports -w ./..
 golint ./..
+go mod tidy
