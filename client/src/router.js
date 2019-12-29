@@ -11,7 +11,7 @@ export default new Router({
     base: process.env.BASE_URL,
     routes: [
         {
-            path: '/',
+            path: '/comments',
             name: 'コメント一覧画面',
             component: CommentList
         },

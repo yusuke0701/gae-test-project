@@ -10,7 +10,7 @@
 <script>
 import { insertComment, getComment } from "../service/comments";
 export default {
-  name: "Comments",
+  name: "CommentDetail",
   data: function() {
     return {
       id: "",

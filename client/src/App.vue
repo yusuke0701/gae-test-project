@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">コメント一覧画面</router-link>|
+      <router-link to="/comments">コメント一覧画面</router-link>|
       <router-link to="/urls">署名付きテスト</router-link>
     </div>
     <router-view />
