@@ -101,6 +101,15 @@ jobs:
             VERSION=$(git rev-parse --short=8 HEAD)
             gcloud app deploy --quiet app.yaml backend.yaml modules/dispatch.yaml --project=$PROJECT --version=$VERSION
 
+  clear-versions:
+    executor: gcloud-executor
+    steps:
+      - run: gcloud --version
+      - checkout
+      - run:
+          name: clear
+          command: gcloud app versions delete v1
+
 # workflows
 workflows:
   build:
@@ -113,3 +122,13 @@ workflows:
           requires:
             - build-server
             - build-client
+  nightly_workflow:
+    triggers:
+      - schedule:
+          cron: "0 1 * * 1" # 月曜日の朝10時: https://www.server-memo.net/tips/crontab.html
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - clear-versions
