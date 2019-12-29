@@ -9,3 +9,8 @@ export function getComment(id) {
     const apiURL = "/api/v1/comments";
     return axios.get(apiURL + "/" + id)
 }
+
+export function getAllComment() {
+    const apiURL = "/api/v1/comments";
+    return axios.get(apiURL)
+}
