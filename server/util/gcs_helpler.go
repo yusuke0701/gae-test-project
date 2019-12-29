@@ -3,22 +3,12 @@ package util
 import (
 	"context"
 	"encoding/base64"
-	"log"
+	"gae-test-project/connection"
 	"time"
 
 	"cloud.google.com/go/storage"
 	"google.golang.org/api/iam/v1"
 )
-
-var iamService *iam.Service
-
-func init() {
-	var err error
-	iamService, err = iam.NewService(context.Background())
-	if err != nil {
-		log.Fatal(err)
-	}
-}
 
 type SignedURLType string
 
@@ -34,7 +24,7 @@ func GetSignedURL(ctx context.Context, method SignedURLType, bucketName, fileNam
 		Expires:        time.Now().Add(15 * time.Minute),
 		ContentType:    contentType,
 		SignBytes: func(b []byte) ([]byte, error) {
-			resp, err := iamService.Projects.ServiceAccounts.SignBlob(
+			resp, err := connection.IAMService.Projects.ServiceAccounts.SignBlob(
 				ServiceAccountID,
 				&iam.SignBlobRequest{BytesToSign: base64.StdEncoding.EncodeToString(b)},
 			).Context(ctx).Do()

@@ -3,7 +3,6 @@ package connection
 import (
 	"context"
 	"gae-test-project/util"
-	"log"
 
 	"cloud.google.com/go/datastore"
 )
@@ -11,12 +10,10 @@ import (
 // DatastoreClient は、データストアへの接続を担保する
 var DatastoreClient *datastore.Client
 
-func init() {
-	ctx := context.Background()
+type DataStore struct{}
 
-	client, err := datastore.NewClient(ctx, util.ProjectID)
-	if err != nil {
-		log.Fatalf("Failed to create client: %v", err)
-	}
-	DatastoreClient = client
+func (d DataStore) Open() (err error) {
+	ctx := context.Background()
+	DatastoreClient, err = datastore.NewClient(ctx, util.ProjectID)
+	return
 }
