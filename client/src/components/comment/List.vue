@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { getAllComment } from "../../service/comments";
+import { getAllComment } from "../../service/comment";
 export default {
   name: "CommentList",
   data: function() {
