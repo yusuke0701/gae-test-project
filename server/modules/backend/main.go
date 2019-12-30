@@ -13,15 +13,24 @@ import (
 const apiVersion = "v1"
 
 func main() {
-	router := gin.Default()
-	router.Use(setEnv())
+	// routing
 	{
-		api := router.Group(fmt.Sprintf("/api/%s", apiVersion))
-		handler.Comments(api.Group("/comments"))
-		handler.SignedURLs(api.Group("/url"))
-	}
+		router := gin.Default()
 
-	// コネクション
+		// middleware
+		router.Use(setEnv())
+
+		{
+			api := router.Group(fmt.Sprintf("/api/%s", apiVersion))
+			handler.Comments(api.Group("/comments"))
+			handler.SignedURLs(api.Group("/url"))
+		}
+
+		if err := router.Run(":8080"); err != nil {
+			log.Fatalf("Failed to create client: %v", err)
+		}
+	}
+	// connection
 	{
 		if err := (connection.DataStore{}).Open(util.ProjectID); err != nil {
 			log.Fatalf("Failed to connect datastore: %v", err)
@@ -29,9 +38,5 @@ func main() {
 		if err := (connection.IAM{}).Open(); err != nil {
 			log.Fatalf("Failed to connect iamService: %v", err)
 		}
-	}
-
-	if err := router.Run(":8080"); err != nil {
-		log.Fatalf("Failed to create client: %v", err)
 	}
 }
