@@ -1,0 +1,10 @@
+package model
+
+// Account は、一件のアカウント情報を表す
+type Account struct {
+	ID       string `json:"id" binding:"required"`
+	Email    string `json:"email" binding:"required"`
+	Name     string `json:"name" binding:"required"`
+	NickName string `json:"nick_name"`
+	Password string `json:"password" binding:"required"`
+}
