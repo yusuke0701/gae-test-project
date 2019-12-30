@@ -1,8 +1,10 @@
 package handler
 
 import (
+	"fmt"
 	"gae-test-project/model"
 	"gae-test-project/store"
+	"gae-test-project/util"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -19,11 +21,13 @@ func Comments(g *gin.RouterGroup) {
 func insertComment(ctx *gin.Context) {
 	comment := new(model.Comment)
 	if err := ctx.Bind(comment); err != nil {
+		util.LogError(ctx.Request.Context(), err.Error)
 		ctx.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	if err := (&store.Comment{}).InsertOrUpadte(ctx.Request.Context(), comment); err != nil {
+	if err := (&store.Comment{}).Insert(ctx.Request.Context(), comment); err != nil {
+		util.LogError(ctx.Request.Context(), err.Error)
 		ctx.String(http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -35,6 +39,7 @@ func getComment(ctx *gin.Context) {
 
 	comment, err := (&store.Comment{}).Get(ctx.Request.Context(), commentID)
 	if err != nil {
+		util.LogError(ctx.Request.Context(), err.Error)
 		ctx.String(http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -44,6 +49,7 @@ func getComment(ctx *gin.Context) {
 func listComment(ctx *gin.Context) {
 	comments, err := (&store.Comment{}).List(ctx.Request.Context())
 	if err != nil {
+		util.LogError(ctx.Request.Context(), err.Error)
 		ctx.String(http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -53,14 +59,21 @@ func listComment(ctx *gin.Context) {
 func updateComment(ctx *gin.Context) {
 	comment := new(model.Comment)
 	if err := ctx.Bind(comment); err != nil {
+		util.LogError(ctx.Request.Context(), err.Error)
 		ctx.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	// commentID := ctx.Param("id")
-	// TODO: 現状だとInsertと処理の違いがない。取得して値を使いまわす部分があってもよいかな
+	commentID := ctx.Param("id")
+	if commentID != comment.ID {
+		err := fmt.Errorf("invalid id. paramID = %s, bodyId = %s", commentID, comment.ID)
+		util.LogError(ctx.Request.Context(), err.Error)
+		ctx.String(http.StatusBadRequest, err.Error())
+		return
+	}
 
-	if err := (&store.Comment{}).InsertOrUpadte(ctx.Request.Context(), comment); err != nil {
+	if err := (&store.Comment{}).Update(ctx.Request.Context(), comment); err != nil {
+		util.LogError(ctx.Request.Context(), err.Error)
 		ctx.String(http.StatusInternalServerError, err.Error())
 		return
 	}
