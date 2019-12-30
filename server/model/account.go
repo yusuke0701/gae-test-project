@@ -8,3 +8,9 @@ type Account struct {
 	NickName string `json:"nick_name"`
 	Password string `json:"password" binding:"required"`
 }
+
+// LoginAccount は、ログインする際のアカウント情報を表す
+type LoginAccount struct {
+	ID       string `json:"id" binding:"required"`
+	Password string `json:"password" binding:"required"`
+}

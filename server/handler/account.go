@@ -84,27 +84,27 @@ func updateAccount(ctx *gin.Context) {
 }
 
 func login(ctx *gin.Context) {
-	reqAccount := new(model.Account)
-	if err := ctx.Bind(reqAccount); err != nil {
+	reqLA := new(model.LoginAccount)
+	if err := ctx.Bind(reqLA); err != nil {
 		util.LogError(ctx.Request.Context(), err.Error)
 		ctx.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	a, err := (&store.Account{}).Get(ctx, reqAccount.ID)
+	a, err := (&store.Account{}).Get(ctx, reqLA.ID)
 	if err != nil {
 		util.LogError(ctx.Request.Context(), err.Error)
 		ctx.String(http.StatusInternalServerError, "ID か パスワード が間違っています。")
 		return
 	}
 
-	if reqAccount.Password != a.Password {
+	if reqLA.Password != a.Password {
 		util.LogError(ctx.Request.Context(), err.Error)
 		ctx.String(http.StatusInternalServerError, "ID か パスワード が間違っています。")
 		return
 	}
 
-	ctx.String(http.StatusOK, "OK")
+	ctx.JSON(http.StatusOK, a)
 }
 
 func logout(ctx *gin.Context) {
