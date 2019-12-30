@@ -1,8 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import CommentList from './components/comment/List'
 import Login from './components/account/Login'
+import Registry from './components/account/Registry'
+
+import CommentList from './components/comment/List'
+
 import SignedURL from './components/SignedURL'
 
 Vue.use(Router)
@@ -15,6 +18,11 @@ export default new Router({
             path: '/login',
             name: 'ログイン画面',
             component: Login
+        },
+        {
+            path: '/registry',
+            name: '新規アカウント登録画面',
+            component: Registry
         },
         {
             path: '/comments',

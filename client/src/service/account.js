@@ -4,8 +4,8 @@ export { insertAccount, getAccount, getAllAccount, updateAccount, login, logout 
 
 const accountAPIBaseURL = "/accounts";
 
-function insertAccount(id, body) {
-    return doPost(accountAPIBaseURL, { "id": id, "body": body })
+function insertAccount(account) {
+    return doPost(accountAPIBaseURL, account)
 }
 
 function getAccount(id) {
@@ -16,8 +16,8 @@ function getAllAccount() {
     return doGet(accountAPIBaseURL)
 }
 
-function updateAccount(id, body) {
-    return doPost(accountAPIBaseURL, { "id": id, "body": body })
+function updateAccount(account) {
+    return doPost(accountAPIBaseURL, account)
 }
 
 function login(id, password) {
