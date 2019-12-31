@@ -1,7 +1,9 @@
 <template>
   <div id="app">
+    <div id="header">
+      <Header />
+    </div>
     <div id="nav">
-      <router-link to="/login">ログイン画面</router-link>|
       <router-link to="/comments">コメント一覧画面</router-link>|
       <router-link to="/urls">署名付きテスト</router-link>
     </div>
@@ -10,6 +12,7 @@
 </template>
 
 <script>
+import Header from "./components/Header";
 export default {
   name: "app",
   data: function() {
@@ -17,6 +20,7 @@ export default {
       loginAccount: {}
     };
   },
+  components: { Header },
   methods: {
     setLoginAccount: function(loginAccount) {
       this.loginAccount = loginAccount;
