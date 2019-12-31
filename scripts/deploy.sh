@@ -21,4 +21,4 @@ cd ../client
 npm run build
 
 cd ../server
-gcloud app deploy app.yaml backend.yaml modules/dispatch.yaml --project=$PROJECT_ID --version=$VERSION
+gcloud app deploy app.yaml backend.yaml modules/dispatch.yaml --project=$PROJECT_ID --version=$VERSION --quiet
