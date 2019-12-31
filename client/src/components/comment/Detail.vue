@@ -1,44 +1,42 @@
 <template>
   <div>
-    <input v-model="id" size="20" />
-    <input v-model="body" size="20" />
-    <button v-on:click="get">取得</button>
-    <button v-on:click="post">投稿</button>
+    {{comment.id}}
+    <input v-model="comment.body" size="20" />
+    <button v-on:click="post">送信</button>
   </div>
 </template>
 
 <script>
-import { insertComment, getComment } from "../../service/comment";
+import { getComment, updateComment } from "../../service/comment";
 export default {
   name: "CommentDetail",
   data: function() {
     return {
-      id: "",
-      body: ""
+      comment: {}
     };
   },
+  mounted() {
+    getComment(this.$route.params.id)
+      .then(res => {
+        if (res.status === 200) {
+          this.comment = res.data;
+        } else {
+          alert(res.data);
+        }
+      })
+      .catch(error => alert(error));
+  },
   methods: {
-    get: function() {
-      getComment(this.id)
+    post() {
+      updateComment(this.comment)
         .then(res => {
           if (res.status === 200) {
-            res.json.then(jsonData => (this.body = jsonData.body));
+            this.comment = res.data;
           } else {
-            res.text().then(data => window.alert(data));
+            alert(res.data);
           }
         })
-        .catch(error => window.alert(error));
-    },
-    post: function() {
-      insertComment(this.id, this.body)
-        .then(res => {
-          if (res.status === 200) {
-            // nop
-          } else {
-            res.text().then(data => window.alert(data));
-          }
-        })
-        .catch(error => window.alert(error));
+        .catch(error => alert(error));
     }
   }
 };

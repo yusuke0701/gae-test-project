@@ -1,6 +1,9 @@
 <template>
   <div class="commentList">
-    <li v-for="comment in commentList" v-bind:key="comment.id">{{comment.body}}</li>
+    <li v-for="comment in commentList" :key="comment.id">
+      {{comment.body}}
+      <button @click="onClick(comment.id)">編集</button>
+    </li>
   </div>
 </template>
 
@@ -17,10 +20,15 @@ export default {
         if (res.status === 200) {
           this.commentList = res.data;
         } else {
-          window.alert(res.data);
+          alert(res.data);
         }
       })
-      .catch(error => window.alert(error));
+      .catch(error => alert(error));
+  },
+  methods: {
+    onClick(id) {
+      this.$router.push("/comments/" + id);
+    }
   }
 };
 </script>

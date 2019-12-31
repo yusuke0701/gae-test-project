@@ -5,6 +5,7 @@ import Login from './components/account/Login'
 import Registry from './components/account/Registry'
 
 import CommentList from './components/comment/List'
+import CommentDetail from './components/comment/Detail'
 
 import SignedURL from './components/SignedURL'
 
@@ -29,7 +30,20 @@ export default new Router({
         {
             path: '/comments',
             name: 'コメント一覧画面',
-            component: CommentList
+            component: CommentList,
+            // TODO: 何故か children だとマッチしない
+            children: [
+                {
+                    path: '/:id',
+                    name: 'コメント詳細画面',
+                    component: CommentDetail
+                }
+            ]
+        },
+        {
+            path: '/comments/:id',
+            name: 'コメント詳細画面',
+            component: CommentDetail,
         },
         {
             path: '/urls',

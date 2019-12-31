@@ -1,11 +1,11 @@
-import { doGet, doPost } from './apiBase';
+import { doGet, doPost, doPut } from './apiBase';
 
 export { insertComment, getComment, getAllComment, updateComment }
 
 const commentAPIBaseURL = "/comments";
 
-function insertComment(id, body) {
-    return doPost(commentAPIBaseURL, { "id": id, "body": body })
+function insertComment(comment) {
+    return doPost(commentAPIBaseURL, comment)
 }
 
 function getComment(id) {
@@ -16,6 +16,6 @@ function getAllComment() {
     return doGet(commentAPIBaseURL)
 }
 
-function updateComment(id, body) {
-    return doPost(commentAPIBaseURL, { "id": id, "body": body })
+function updateComment(comment) {
+    return doPut(commentAPIBaseURL, comment)
 }
