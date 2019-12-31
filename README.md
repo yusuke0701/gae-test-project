@@ -2,6 +2,8 @@
 [![CircleCI](https://circleci.com/gh/yusuke0701/gae-test-project.svg?style=svg)](https://circleci.com/gh/yusuke0701/gae-test-project)
 
 ### 開発環境の構築
+1. CloudSDKのインストール
+    1. 公式URL: https://cloud.google.com/sdk/
 1. golangのインストール
     1. 参考URL: https://golang.org/doc/install
 1. npmとnodejsのインストール

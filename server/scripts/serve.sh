@@ -2,8 +2,5 @@
 
 cd `dirname $0`
 
-cd ../client
-npm run build
-
-cd ../server
+cd ../server/modules/backend
 gin run main.go

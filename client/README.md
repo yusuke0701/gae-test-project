@@ -1,24 +1,27 @@
 # client
 
-## Project setup
-```
-npm install
-```
+## セットアップ方法
+下記ドキュメントを参照
+https://github.com/yusuke0701/gae-test-project/blob/master/README.md
 
-### Compiles and hot-reloads for development
+### 開発用サーバーの立ち上げ方
 ```
 npm run serve
 ```
+vueの開発用サーバーが立ち上がります
 
-### Compiles and minifies for production
+([`vue-cli-service serve`](https://cli.vuejs.org/guide/cli-service.html#vue-cli-service-serve))
 ```
-npm run build
+npm run mock
 ```
+モックサーバーが立ち上がります
 
-### Lints and fixes files
+([`json-server`](https://github.com/typicode/json-server))
 ```
-npm run lint
+npm run serve:mock
 ```
+上記のvueの開発用サーバーとモックサーバーが立ち上がります
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### 注意点
+* ローカル環境変数は `.env.dev` に置く
+* `json-server` のデータは `mock`フォルダに置く
