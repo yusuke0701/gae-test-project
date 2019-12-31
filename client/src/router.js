@@ -8,6 +8,8 @@ import CommentList from './components/comment/List'
 
 import SignedURL from './components/SignedURL'
 
+import Test from './components/Test'
+
 Vue.use(Router)
 
 export default new Router({
@@ -33,6 +35,11 @@ export default new Router({
             path: '/urls',
             name: '署名付きURL',
             component: SignedURL
+        },
+        {
+            path: '/test',
+            name: '動作確認用',
+            component: Test
         }
     ]
 })
