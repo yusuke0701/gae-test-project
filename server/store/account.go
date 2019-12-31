@@ -3,7 +3,6 @@ package store
 import (
 	"context"
 	"fmt"
-	"gae-test-project/connection"
 	"gae-test-project/model"
 	"gae-test-project/util"
 
@@ -27,7 +26,7 @@ func (aStore *Account) Insert(ctx context.Context, a *model.Account) error {
 		return err
 	}
 
-	if _, err := connection.DatastoreClient.Put(ctx, aStore.newKey(a.ID), a); err != nil {
+	if _, err := util.DatastoreClient.Put(ctx, aStore.newKey(a.ID), a); err != nil {
 		return err
 	}
 	return nil
@@ -35,14 +34,14 @@ func (aStore *Account) Insert(ctx context.Context, a *model.Account) error {
 
 // Get は、コメントを一件取得する
 func (aStore *Account) Get(ctx context.Context, id string) (a *model.Account, err error) {
-	err = connection.DatastoreClient.Get(ctx, aStore.newKey(id), a)
+	err = util.DatastoreClient.Get(ctx, aStore.newKey(id), a)
 	return
 }
 
 // List は、コメントを一覧取得する
 func (aStore *Account) List(ctx context.Context) (as []*model.Account, err error) {
 	q := datastore.NewQuery(aStore.kind())
-	_, err = connection.DatastoreClient.GetAll(ctx, q, &as)
+	_, err = util.DatastoreClient.GetAll(ctx, q, &as)
 	return
 }
 
@@ -52,7 +51,7 @@ func (aStore *Account) Update(ctx context.Context, a *model.Account) error {
 		return err
 	}
 
-	if _, err := connection.DatastoreClient.Put(ctx, aStore.newKey(a.ID), a); err != nil {
+	if _, err := util.DatastoreClient.Put(ctx, aStore.newKey(a.ID), a); err != nil {
 		return err
 	}
 	return nil

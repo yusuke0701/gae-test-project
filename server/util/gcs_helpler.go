@@ -3,7 +3,6 @@ package util
 import (
 	"context"
 	"encoding/base64"
-	"gae-test-project/connection"
 	"time"
 
 	"cloud.google.com/go/storage"
@@ -18,13 +17,16 @@ const (
 )
 
 func GetSignedURL(ctx context.Context, method SignedURLType, bucketName, fileName, contentType string) (string, error) {
+	if IsLocal {
+		return "mock-url", nil
+	}
 	return storage.SignedURL(bucketName, fileName, &storage.SignedURLOptions{
 		GoogleAccessID: ServiceAccountName,
 		Method:         string(method),
 		Expires:        time.Now().Add(15 * time.Minute),
 		ContentType:    contentType,
 		SignBytes: func(b []byte) ([]byte, error) {
-			resp, err := connection.IAMService.Projects.ServiceAccounts.SignBlob(
+			resp, err := IAMService.Projects.ServiceAccounts.SignBlob(
 				ServiceAccountID,
 				&iam.SignBlobRequest{BytesToSign: base64.StdEncoding.EncodeToString(b)},
 			).Context(ctx).Do()

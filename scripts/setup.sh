@@ -2,6 +2,8 @@
 
 cd `dirname $0`
 
+gcloud components install cloud-datastore-emulator
+
 export GO111MODULE=off
 go get -u github.com/codegangsta/gin
 go get -u golang.org/x/tools/cmd/goimports

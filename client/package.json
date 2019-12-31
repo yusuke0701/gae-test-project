@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --port 4200",
-    "mock": "json-server --watch mock/db.json",
-    "serve:mock": "vue-cli-service serve --port 4200 & json-server --watch mock/db.json",
+    "mock": "json-server --watch mock/db.json --port 8080",
+    "serve:mock": "vue-cli-service serve --port 4200 & json-server --watch mock/db.json --port 8080",
     "build": "vue-cli-service build --dest ../server/static",
     "lint": "vue-cli-service lint"
   },
