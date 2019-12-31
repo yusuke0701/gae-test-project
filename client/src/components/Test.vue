@@ -5,7 +5,7 @@
     <ol>
       <li v-for="todo in todos" v-bind:key="todo.id">{{todo.text}}</li>
     </ol>
-    <button v-on:click="reverseMessage">Reverse Message</button>
+    <button @click="reverseMessage">Reverse Message</button>
   </div>
 </template>
 

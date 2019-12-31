@@ -30,7 +30,7 @@
         Password(確認用):
         <input type="password" v-model="password2" size="20" required />
       </p>
-      <button v-on:click="regist">新規登録</button>
+      <button @click="regist">新規登録</button>
     </div>
   </div>
 </template>

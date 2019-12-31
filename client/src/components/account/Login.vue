@@ -10,11 +10,11 @@
         Password:
         <input type="password" v-model="password" size="20" required />
       </p>
-      <button v-on:click="doLogin">ログイン</button>
+      <button @click="doLogin">ログイン</button>
     </div>
     <div>
       アカウントを持ってない方はこちら
-      <button v-on:click="doRegistry">新規登録</button>
+      <button @click="doRegistry">新規登録</button>
     </div>
   </div>
 </template>

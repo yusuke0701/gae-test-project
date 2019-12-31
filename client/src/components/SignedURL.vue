@@ -1,7 +1,7 @@
 <template>
   <div>
     <input v-model="csvFileName" size="20" />
-    <button v-on:click="downlaodCSV">CSVダウンロード</button>
+    <button @click="downlaodCSV">CSVダウンロード</button>
   </div>
 </template>
 
