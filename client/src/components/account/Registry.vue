@@ -38,7 +38,7 @@
 <script>
 import { insertAccount } from "../../service/account";
 export default {
-  name: "Login",
+  name: "Registry",
   data: function() {
     return {
       id: "",

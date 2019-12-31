@@ -14,7 +14,7 @@
     </div>
     <div>
       アカウントを持ってない方はこちら
-      <button v-on:click="doLogin">新規登録</button>
+      <button v-on:click="doRegistry">新規登録</button>
     </div>
   </div>
 </template>
