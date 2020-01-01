@@ -1,6 +1,12 @@
 # GAEの動作確認用リポジトリ
 [![CircleCI](https://circleci.com/gh/yusuke0701/gae-test-project.svg?style=svg)](https://circleci.com/gh/yusuke0701/gae-test-project)
 
+### 主な構成
+##### Server
+GAE/Go(1.13) + Datastore
+##### Front
+Vue.js(2.6)
+
 ### 開発環境の構築
 1. CloudSDKのインストール
     1. 公式URL: https://cloud.google.com/sdk/
