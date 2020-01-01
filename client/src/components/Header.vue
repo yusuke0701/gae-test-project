@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <button @click="goHome">Homeへ</button>
-    <button @click="goLogin">ログイン画面へ</button>
-  </div>
+  <header>
+    <button class="btn btn-primary" @click="goHome">Homeへ</button>
+    <button class="btn btn-primary" @click="goLogin">ログイン画面へ</button>
+  </header>
 </template>
 
 <script>

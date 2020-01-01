@@ -3,10 +3,16 @@
     <div id="header">
       <Header />
     </div>
-    <div id="nav">
-      <router-link to="/comments">コメント一覧画面</router-link>|
-      <router-link to="/urls">署名付きテスト</router-link>
-    </div>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <router-link to="/comments">コメント一覧画面</router-link>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+          <router-link to="/urls">署名付きテスト</router-link>
+        </li>
+      </ol>
+    </nav>
     <router-view @child-event="setLoginAccount" />
   </div>
 </template>
@@ -29,6 +35,8 @@ export default {
 };
 </script>
 
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<!-- <style scoped> -->
 <style>
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;

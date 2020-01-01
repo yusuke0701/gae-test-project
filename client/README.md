@@ -24,4 +24,5 @@ npm run serve:mock
 
 ### 注意点
 * ローカル環境変数は `.env.dev` に置く
+* 本番環境変数は `.env` に置く
 * `json-server` のデータは `mock`フォルダに置く

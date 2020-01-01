@@ -30,15 +30,15 @@ export default new Router({
         {
             path: '/comments',
             name: 'コメント一覧画面',
-            component: CommentList,
+            component: CommentList
             // TODO: 何故か children だとマッチしない
-            children: [
-                {
-                    path: '/:id',
-                    name: 'コメント詳細画面',
-                    component: CommentDetail
-                }
-            ]
+            // children: [
+            //     {
+            //         path: '/:id',
+            //         name: 'コメント詳細画面',
+            //         component: CommentDetail
+            //     }
+            // ]
         },
         {
             path: '/comments/:id',
