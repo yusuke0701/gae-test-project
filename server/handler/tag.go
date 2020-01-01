@@ -10,24 +10,24 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Comments is handler bundle
-func Comments(g *gin.RouterGroup) {
-	g.POST("", insertComment)
-	g.GET("/:comment_id", getComment)
-	g.GET("", listComment)
-	g.PUT("/:comment_id", updateComment)
-	g.DELETE("/:comment_id", deleteComment)
+// Tags is handler bundle
+func Tags(g *gin.RouterGroup) {
+	g.POST("", insertTag)
+	g.GET("/:tag_id", getTag)
+	g.GET("", listTag)
+	g.PUT("/:tag_id", updateTag)
+	g.DELETE("/:tag_id", deleteTag)
 }
 
-func insertComment(ctx *gin.Context) {
-	comment := new(model.Comment)
-	if err := ctx.Bind(comment); err != nil {
+func insertTag(ctx *gin.Context) {
+	tag := new(model.Tag)
+	if err := ctx.Bind(tag); err != nil {
 		util.LogError(ctx.Request.Context(), err.Error)
 		ctx.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	if err := (&store.Comment{}).Insert(ctx.Request.Context(), comment); err != nil {
+	if err := (&store.Tag{}).Insert(ctx.Request.Context(), tag); err != nil {
 		util.LogError(ctx.Request.Context(), err.Error)
 		switch err.(type) {
 		case *util.ErrConflict:
@@ -37,18 +37,18 @@ func insertComment(ctx *gin.Context) {
 		}
 		return
 	}
-	ctx.JSON(http.StatusOK, comment)
+	ctx.JSON(http.StatusOK, tag)
 }
 
-func getComment(ctx *gin.Context) {
-	commentID, err := paramParser.commentID(ctx)
+func getTag(ctx *gin.Context) {
+	tagID, err := paramParser.tagID(ctx)
 	if err != nil {
 		util.LogError(ctx.Request.Context(), err.Error)
 		ctx.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	comment, err := (&store.Comment{}).Get(ctx.Request.Context(), commentID)
+	tag, err := (&store.Tag{}).Get(ctx.Request.Context(), tagID)
 	if err != nil {
 		util.LogError(ctx.Request.Context(), err.Error)
 		switch err.(type) {
@@ -59,41 +59,41 @@ func getComment(ctx *gin.Context) {
 		}
 		return
 	}
-	ctx.JSON(http.StatusOK, comment)
+	ctx.JSON(http.StatusOK, tag)
 }
 
-func listComment(ctx *gin.Context) {
-	comments, err := (&store.Comment{}).List(ctx.Request.Context())
+func listTag(ctx *gin.Context) {
+	tags, err := (&store.Tag{}).List(ctx.Request.Context())
 	if err != nil {
 		util.LogError(ctx.Request.Context(), err.Error)
 		ctx.String(http.StatusInternalServerError, err.Error())
 		return
 	}
-	ctx.JSON(http.StatusOK, comments)
+	ctx.JSON(http.StatusOK, tags)
 }
 
-func updateComment(ctx *gin.Context) {
-	comment := new(model.Comment)
-	if err := ctx.Bind(comment); err != nil {
+func updateTag(ctx *gin.Context) {
+	tag := new(model.Tag)
+	if err := ctx.Bind(tag); err != nil {
 		util.LogError(ctx.Request.Context(), err.Error)
 		ctx.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	commentID, err := paramParser.commentID(ctx)
+	tagID, err := paramParser.tagID(ctx)
 	if err != nil {
 		util.LogError(ctx.Request.Context(), err.Error)
 		ctx.String(http.StatusBadRequest, err.Error())
 		return
 	}
-	if commentID != comment.ID {
-		err := fmt.Errorf("invalid id. paramID = %d, bodyId = %d", commentID, comment.ID)
+	if tagID != tag.ID {
+		err := fmt.Errorf("invalid id. paramID = %d, bodyId = %d", tagID, tag.ID)
 		util.LogError(ctx.Request.Context(), err.Error)
 		ctx.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	if err := (&store.Comment{}).Update(ctx.Request.Context(), comment); err != nil {
+	if err := (&store.Tag{}).Update(ctx.Request.Context(), tag); err != nil {
 		util.LogError(ctx.Request.Context(), err.Error)
 		switch err.(type) {
 		case *util.ErrNotFound:
@@ -105,18 +105,18 @@ func updateComment(ctx *gin.Context) {
 		}
 		return
 	}
-	ctx.JSON(http.StatusOK, comment)
+	ctx.JSON(http.StatusOK, tag)
 }
 
-func deleteComment(ctx *gin.Context) {
-	commentID, err := paramParser.commentID(ctx)
+func deleteTag(ctx *gin.Context) {
+	tagID, err := paramParser.tagID(ctx)
 	if err != nil {
 		util.LogError(ctx.Request.Context(), err.Error)
 		ctx.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	if err := (&store.Comment{}).Delete(ctx.Request.Context(), commentID); err != nil {
+	if err := (&store.Tag{}).Delete(ctx.Request.Context(), tagID); err != nil {
 		util.LogError(ctx.Request.Context(), err.Error)
 		switch err.(type) {
 		case *util.ErrNotFound:

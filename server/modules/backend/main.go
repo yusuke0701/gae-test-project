@@ -42,7 +42,14 @@ func main() {
 
 		{
 			api := router.Group(fmt.Sprintf("/api/%s", apiVersion))
+
+			// rest api
+			handler.Accounts(api.Group("/accounts"))
 			handler.Comments(api.Group("/comments"))
+			handler.Tags(api.Group("/tags"))
+			handler.Threads(api.Group("/threads"))
+
+			// other api
 			handler.SignedURLs(api.Group("/url"))
 		}
 

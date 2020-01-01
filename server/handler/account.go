@@ -13,9 +13,10 @@ import (
 // Accounts is handler bundle
 func Accounts(g *gin.RouterGroup) {
 	g.POST("", insertAccount)
-	g.GET("/:id", getAccount)
+	g.GET("/:account_id", getAccount)
 	g.GET("", listAccount)
-	g.PUT("/:id", updateAccount)
+	g.PUT("/:account_id", updateAccount)
+	g.DELETE("/:account_id", deleteAccount)
 
 	g.POST("/login", login)
 	g.POST("/logout", logout)
@@ -43,7 +44,7 @@ func insertAccount(ctx *gin.Context) {
 }
 
 func getAccount(ctx *gin.Context) {
-	accountID := ctx.Param("id")
+	accountID := paramParser.accountID(ctx)
 
 	account, err := (&store.Account{}).Get(ctx.Request.Context(), accountID)
 	if err != nil {
@@ -77,7 +78,7 @@ func updateAccount(ctx *gin.Context) {
 		return
 	}
 
-	accountID := ctx.Param("id")
+	accountID := paramParser.accountID(ctx)
 	if accountID != account.ID {
 		err := fmt.Errorf("invalid id. paramID = %s, bodyId = %s", accountID, account.ID)
 		util.LogError(ctx.Request.Context(), err.Error)
@@ -98,6 +99,22 @@ func updateAccount(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(http.StatusOK, account)
+}
+
+func deleteAccount(ctx *gin.Context) {
+	accountID := paramParser.accountID(ctx)
+
+	if err := (&store.Account{}).Delete(ctx.Request.Context(), accountID); err != nil {
+		util.LogError(ctx.Request.Context(), err.Error)
+		switch err.(type) {
+		case *util.ErrNotFound:
+			ctx.String(http.StatusNotFound, err.Error())
+		default:
+			ctx.String(http.StatusInternalServerError, err.Error())
+		}
+		return
+	}
+	ctx.Status(http.StatusOK)
 }
 
 func login(ctx *gin.Context) {

@@ -1,11 +1,11 @@
 package model
 
-import "time"
-
 // Comment は、一件のコメントを表す
 type Comment struct {
-	ID        string    `json:"id" binding:"required"`
-	Body      string    `json:"body" binding:"required"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	ID         int64  `json:"id"`
+	ThreadID   string `json:"thread_id" binding:"required"`
+	Body       string `json:"body" binding:"required"`
+	ContentURL string `json:"content_url"`
+
+	Meta
 }

@@ -7,6 +7,8 @@
 [github.com/gin-gonic/gin](https://github.com/gin-gonic/gin)
 ##### live-reloader
 [github.com/codegangsta/gin](https://github.com/codegangsta/gin)
+##### uuid
+[github.com/google/uuid](https://github.com/google/uuid)
 
 ### セットアップ方法
 下記ドキュメントを参照
