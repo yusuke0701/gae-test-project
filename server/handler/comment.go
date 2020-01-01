@@ -28,7 +28,12 @@ func insertComment(ctx *gin.Context) {
 
 	if err := (&store.Comment{}).Insert(ctx.Request.Context(), comment); err != nil {
 		util.LogError(ctx.Request.Context(), err.Error)
-		ctx.String(http.StatusInternalServerError, err.Error())
+		switch err.(type) {
+		case *util.ErrConflict:
+			ctx.String(http.StatusConflict, err.Error())
+		default:
+			ctx.String(http.StatusInternalServerError, err.Error())
+		}
 		return
 	}
 	ctx.JSON(http.StatusOK, comment)
@@ -40,7 +45,12 @@ func getComment(ctx *gin.Context) {
 	comment, err := (&store.Comment{}).Get(ctx.Request.Context(), commentID)
 	if err != nil {
 		util.LogError(ctx.Request.Context(), err.Error)
-		ctx.String(http.StatusInternalServerError, err.Error())
+		switch err.(type) {
+		case *util.ErrNotFound:
+			ctx.String(http.StatusNotFound, err.Error())
+		default:
+			ctx.String(http.StatusInternalServerError, err.Error())
+		}
 		return
 	}
 	ctx.JSON(http.StatusOK, comment)
@@ -74,7 +84,14 @@ func updateComment(ctx *gin.Context) {
 
 	if err := (&store.Comment{}).Update(ctx.Request.Context(), comment); err != nil {
 		util.LogError(ctx.Request.Context(), err.Error)
-		ctx.String(http.StatusInternalServerError, err.Error())
+		switch err.(type) {
+		case *util.ErrNotFound:
+			ctx.String(http.StatusNotFound, err.Error())
+		case *util.ErrConflict:
+			ctx.String(http.StatusConflict, err.Error())
+		default:
+			ctx.String(http.StatusInternalServerError, err.Error())
+		}
 		return
 	}
 	ctx.JSON(http.StatusOK, comment)

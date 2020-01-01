@@ -31,7 +31,12 @@ func insertAccount(ctx *gin.Context) {
 
 	if err := (&store.Account{}).Insert(ctx.Request.Context(), a); err != nil {
 		util.LogError(ctx.Request.Context(), err.Error)
-		ctx.String(http.StatusInternalServerError, err.Error())
+		switch err.(type) {
+		case *util.ErrConflict:
+			ctx.String(http.StatusConflict, err.Error())
+		default:
+			ctx.String(http.StatusInternalServerError, err.Error())
+		}
 		return
 	}
 	ctx.JSON(http.StatusOK, a)
@@ -43,7 +48,12 @@ func getAccount(ctx *gin.Context) {
 	account, err := (&store.Account{}).Get(ctx.Request.Context(), accountID)
 	if err != nil {
 		util.LogError(ctx.Request.Context(), err.Error)
-		ctx.String(http.StatusInternalServerError, err.Error())
+		switch err.(type) {
+		case *util.ErrNotFound:
+			ctx.String(http.StatusNotFound, err.Error())
+		default:
+			ctx.String(http.StatusInternalServerError, err.Error())
+		}
 		return
 	}
 	ctx.JSON(http.StatusOK, account)
@@ -77,7 +87,14 @@ func updateAccount(ctx *gin.Context) {
 
 	if err := (&store.Account{}).Update(ctx.Request.Context(), account); err != nil {
 		util.LogError(ctx.Request.Context(), err.Error)
-		ctx.String(http.StatusInternalServerError, err.Error())
+		switch err.(type) {
+		case *util.ErrNotFound:
+			ctx.String(http.StatusNotFound, err.Error())
+		case *util.ErrConflict:
+			ctx.String(http.StatusConflict, err.Error())
+		default:
+			ctx.String(http.StatusInternalServerError, err.Error())
+		}
 		return
 	}
 	ctx.JSON(http.StatusOK, account)
