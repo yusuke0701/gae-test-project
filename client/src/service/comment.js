@@ -1,6 +1,6 @@
-import { doGet, doPost, doPut } from './apiBase';
+import { doGet, doPost, doPut, doDelete } from './apiBase';
 
-export { insertComment, getComment, getAllComment, updateComment }
+export { insertComment, getComment, getAllComment, updateComment, deleteComment }
 
 const commentAPIBaseURL = "/comments";
 
@@ -18,4 +18,8 @@ function getAllComment() {
 
 function updateComment(comment) {
     return doPut(commentAPIBaseURL, comment)
+}
+
+function deleteComment(id) {
+    return doDelete(commentAPIBaseURL + "/" + id)
 }

@@ -1,6 +1,6 @@
-import { doGet, doPost } from './apiBase';
+import { doGet, doPost, doPut, doDelete } from './apiBase';
 
-export { insertAccount, getAccount, getAllAccount, updateAccount, login, logout }
+export { insertAccount, getAccount, getAllAccount, updateAccount, deleteAccount, login, logout }
 
 const accountAPIBaseURL = "/accounts";
 
@@ -17,7 +17,11 @@ function getAllAccount() {
 }
 
 function updateAccount(account) {
-    return doPost(accountAPIBaseURL, account)
+    return doPut(accountAPIBaseURL, account)
+}
+
+function deleteAccount(id) {
+    return doDelete(accountAPIBaseURL + "/" + id)
 }
 
 function login(id, password) {
