@@ -7,8 +7,6 @@ import Registry from './components/account/Registry'
 import CommentList from './components/comment/List'
 import CommentDetail from './components/comment/Detail'
 
-import SignedURL from './components/SignedURL'
-
 import Test from './components/Test'
 
 Vue.use(Router)
@@ -44,11 +42,6 @@ export default new Router({
             path: '/comments/:id',
             name: 'コメント詳細画面',
             component: CommentDetail,
-        },
-        {
-            path: '/urls',
-            name: '署名付きURL',
-            component: SignedURL
         },
         {
             path: '/test',

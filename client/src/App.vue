@@ -6,9 +6,6 @@
         <li class="breadcrumb-item">
           <router-link to="/comments">コメント一覧画面</router-link>
         </li>
-        <li class="breadcrumb-item active" aria-current="page">
-          <router-link to="/urls">署名付きテスト</router-link>
-        </li>
       </ol>
     </nav>
     <router-view @child-event="setLoginAccount" />
