@@ -1,20 +1,20 @@
 <template>
-  <div class="login">
-    <h2>ログイン画面</h2>
-    <div>
-      <p>
-        ID:
-        <input type="text" v-model="id" size="20" required />
-      </p>
-      <p>
-        Password:
-        <input type="password" v-model="password" size="20" required />
-      </p>
-      <button @click="doLogin">ログイン</button>
+  <div>
+    <p>ログイン/登録</p>
+    <div id="login">
+      <b-form>
+        <p id="login-title">ログイン</p>
+        <input type="text" v-model="id" size="20" placeholder="ID" required />
+        <input type="password" v-model="password" size="20" placeholder="パスワード" required />
+        <b-button @click="doLogin">ログイン</b-button>
+      </b-form>
     </div>
-    <div>
-      アカウントを持ってない方はこちら
-      <button @click="doRegistry">新規登録</button>
+    <div id="registry">
+      <b-form>
+        <p id="registry-title">はじめての方</p>
+        <p>コメントを書き込むには、無料ID登録が必要です。</p>
+        <b-button href="/registry">新規登録</b-button>
+      </b-form>
     </div>
   </div>
 </template>
@@ -22,15 +22,15 @@
 <script>
 import { login } from "../../service/account";
 export default {
-  name: "Login",
-  data: function() {
+  name: "ログイン画面",
+  data() {
     return {
       id: "",
       password: ""
     };
   },
   methods: {
-    doLogin: function() {
+    doLogin() {
       login(this.id, this.password)
         .then(res => {
           if (res.status === 200) {
@@ -41,10 +41,22 @@ export default {
           }
         })
         .catch(error => window.alert(error));
-    },
-    doRegistry: function() {
-      this.$router.push("/registry");
     }
   }
 };
 </script>
+
+<style scoped>
+#login {
+  background-color: aliceblue;
+}
+#login-title {
+  background-color: azure;
+}
+#registry {
+  background-color: aliceblue;
+}
+#registry-title {
+  background-color: azure;
+}
+</style>

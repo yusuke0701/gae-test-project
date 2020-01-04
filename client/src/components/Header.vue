@@ -33,5 +33,6 @@ export default {
   top: 0;
   position: fixed;
   background-color: aliceblue;
+  text-align: center;
 }
 </style>
