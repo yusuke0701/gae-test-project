@@ -36,10 +36,9 @@
 </template>
 
 <script>
-import { insertAccount } from "../../service/account";
+import { insertAccount } from "../service/account";
 export default {
-  name: "Registry",
-  data: function() {
+  data() {
     return {
       id: "",
       email: "",
@@ -51,7 +50,7 @@ export default {
     };
   },
   methods: {
-    regist: function() {
+    regist() {
       if (this.email !== this.email2) {
         alert("メールアドレスが一致しません。");
         return;

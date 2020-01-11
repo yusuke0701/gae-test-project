@@ -1,11 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import Login from './components/account/Login'
-import Registry from './components/account/Registry'
-
-import CommentList from './components/comment/List'
-import CommentDetail from './components/comment/Detail'
+import AccountRegistry from './components/AccountRegistry'
+import CommentDetail from './components/CommentDetail'
+import CommentList from './components/CommentList'
+import Login from './components/Login'
 
 import Test from './components/Test'
 
@@ -23,7 +22,7 @@ export default new Router({
         {
             path: '/registry',
             name: '新規アカウント登録画面',
-            component: Registry
+            component: AccountRegistry
         },
         {
             path: '/comments',

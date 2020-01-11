@@ -7,10 +7,9 @@
 </template>
 
 <script>
-import { getComment, updateComment } from "../../service/comment";
+import { getComment, updateComment } from "../service/comment";
 export default {
-  name: "CommentDetail",
-  data: function() {
+  data() {
     return {
       comment: {}
     };

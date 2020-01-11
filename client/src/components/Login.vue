@@ -20,9 +20,8 @@
 </template>
 
 <script>
-import { login } from "../../service/account";
+import { login } from "../service/account";
 export default {
-  name: "ログイン画面",
   data() {
     return {
       id: "",

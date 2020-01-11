@@ -13,17 +13,16 @@
 </template>
 
 <script>
-import Header from "./components/Header";
+import Header from "./components/TheHeader";
 export default {
-  name: "app",
-  data: function() {
+  data() {
     return {
       loginAccount: {}
     };
   },
   components: { Header },
   methods: {
-    setLoginAccount: function(loginAccount) {
+    setLoginAccount(loginAccount) {
       this.loginAccount = loginAccount;
     }
   }

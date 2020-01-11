@@ -8,10 +8,9 @@
 </template>
 
 <script>
-import { getAllComment } from "../../service/comment";
+import { getAllComment } from "../service/comment";
 export default {
-  name: "CommentList",
-  data: function() {
+  data() {
     return { commentList: [] };
   },
   mounted() {

@@ -8,14 +8,13 @@
 <script>
 import { getURLToCSVDonwload } from "../service/signedurl";
 export default {
-  name: "SignedURL",
-  data: function() {
+  data() {
     return {
       csvFileName: ""
     };
   },
   methods: {
-    downlaodCSV: function() {
+    downlaodCSV() {
       getURLToCSVDonwload(this.csvFileName)
         .then(res => {
           if (res.status === 200) {
