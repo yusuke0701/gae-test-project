@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import Header from "./components/TheHeader";
+import Header from "@/components/organisms/Header";
 export default {
   data() {
     return {
