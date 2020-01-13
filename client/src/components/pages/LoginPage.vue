@@ -1,14 +1,7 @@
 <template>
   <div>
-    <p>ログイン/登録</p>
-    <div id="login">
-      <b-form>
-        <p id="login-title">ログイン</p>
-        <input type="text" v-model="id" size="20" placeholder="ID" required />
-        <input type="password" v-model="password" size="20" placeholder="パスワード" required />
-        <b-button @click="doLogin">ログイン</b-button>
-      </b-form>
-    </div>
+    <PageTitle :msg="title" />
+    <div id="login"></div>
     <div id="registry">
       <b-form>
         <p id="registry-title">はじめての方</p>
@@ -20,12 +13,15 @@
 </template>
 
 <script>
-import { login } from "../service/account";
+import PageTitle from "@/components/atoms/PageTitle";
+import { login } from "@/service/account";
 export default {
+  components: { PageTitle },
   data() {
     return {
       id: "",
-      password: ""
+      password: "",
+      title: "ログイン/登録"
     };
   },
   methods: {
