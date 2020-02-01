@@ -1,12 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import AccountRegistry from './components/AccountRegistry'
-import CommentDetail from './components/CommentDetail'
-import CommentList from './components/CommentList'
-import Login from './views/Login'
-
-import Test from './components/Test'
+import AccountRegistry from '@/components/AccountRegistry'
+import CommentDetail from '@/components/CommentDetail'
+import CommentList from '@/components/CommentList'
+import Login from '@/components/pages/Login'
+import Test from '@/components/Test'
 
 Vue.use(Router)
 
