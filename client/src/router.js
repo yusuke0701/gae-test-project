@@ -4,7 +4,7 @@ import Router from 'vue-router'
 import AccountRegistry from './components/AccountRegistry'
 import CommentDetail from './components/CommentDetail'
 import CommentList from './components/CommentList'
-import Login from './components/Login'
+import Login from './views/Login'
 
 import Test from './components/Test'
 
@@ -28,14 +28,6 @@ export default new Router({
             path: '/comments',
             name: 'コメント一覧画面',
             component: CommentList
-            // TODO: 何故か children だとマッチしない
-            // children: [
-            //     {
-            //         path: '/:id',
-            //         name: 'コメント詳細画面',
-            //         component: CommentDetail
-            //     }
-            // ]
         },
         {
             path: '/comments/:id',
