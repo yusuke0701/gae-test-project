@@ -1,26 +1,28 @@
 <template>
   <div id="app">
-    <Header :loginAccount="loginAccount" />
+    <TheHeader :loginAccount="loginAccount" />
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
-          <router-link to="/comments">コメント一覧画面</router-link>
+          <TagsSearcher />
         </li>
       </ol>
     </nav>
+    <Home />
     <router-view @child-event="setLoginAccount" />
   </div>
 </template>
 
 <script>
-import Header from "@/components/organisms/Header";
+import TheHeader from "@/components/organisms/TheHeader";
+import TagsSearcher from "@/components/TagsSearcher";
 export default {
   data() {
     return {
       loginAccount: {}
     };
   },
-  components: { Header },
+  components: { TheHeader, TagsSearcher },
   methods: {
     setLoginAccount(loginAccount) {
       this.loginAccount = loginAccount;
