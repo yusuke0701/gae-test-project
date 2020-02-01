@@ -13,7 +13,7 @@
 import HomePageMenu from "@/components/molecules/HomePageMenu";
 import HomePageTitle from "@/components/molecules/HomePageTitle";
 export default {
-  name: "Header",
+  name: "TheHeader",
   components: { HomePageMenu, HomePageTitle },
   props: {
     loginAccount: {

@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import TheHeader from "@/components/TheHeader";
+import TheHeader from "@/components/organisms/TheHeader";
 import TagsSearcher from "@/components/TagsSearcher";
 export default {
   data() {
