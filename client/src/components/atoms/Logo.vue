@@ -4,7 +4,6 @@
 
 <script>
 export default {
-  name: "Logo",
   props: {
     alt: {
       type: String,

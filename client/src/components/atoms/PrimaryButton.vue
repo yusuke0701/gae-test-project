@@ -4,11 +4,15 @@
 
 <script>
 export default {
-  name: "atom-button",
-  props: ["msg"],
+  props: {
+    msg: {
+      type: String,
+      required: true
+    }
+  },
   methods: {
-    onClick() {
-      this.$emit("click");
+    onClick(e) {
+      this.$emit("click", e);
     }
   }
 };
