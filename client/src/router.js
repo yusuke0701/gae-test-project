@@ -5,7 +5,7 @@ import AccountRegistry from '@/components/AccountRegistry'
 import CommentDetail from '@/components/CommentDetail'
 import CommentList from '@/components/CommentList'
 import Login from '@/components/pages/LoginPage'
-import Test from '@/components/Test'
+import Test from '@/components/test/Test'
 
 Vue.use(Router)
 
