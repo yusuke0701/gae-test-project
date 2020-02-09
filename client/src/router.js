@@ -4,7 +4,7 @@ import Router from 'vue-router'
 import AccountRegistry from '@/components/AccountRegistry'
 import CommentDetail from '@/components/CommentDetail'
 import CommentList from '@/components/CommentList'
-import Login from '@/components/pages/LoginPage'
+import pages from '@/components/pages'
 import Test from '@/components/test/Test'
 
 Vue.use(Router)
@@ -16,7 +16,7 @@ export default new Router({
         {
             path: '/login',
             name: 'ログイン画面',
-            component: Login
+            component: pages.LoginPage
         },
         {
             path: '/registry',
