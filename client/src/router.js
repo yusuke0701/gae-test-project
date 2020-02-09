@@ -1,9 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
-import AccountRegistry from '@/components/AccountRegistry'
-import CommentDetail from '@/components/CommentDetail'
-import CommentList from '@/components/CommentList'
 import pages from '@/components/pages'
 import Test from '@/components/test/Test'
 
@@ -21,17 +17,17 @@ export default new Router({
         {
             path: '/registry',
             name: '新規アカウント登録画面',
-            component: AccountRegistry
+            component: pages.AccountRegistry
         },
         {
             path: '/comments',
             name: 'コメント一覧画面',
-            component: CommentList
+            component: pages.CommentList
         },
         {
             path: '/comments/:id',
             name: 'コメント詳細画面',
-            component: CommentDetail,
+            component: pages.CommentDetail,
         },
         {
             path: '/test',
