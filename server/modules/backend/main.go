@@ -2,14 +2,15 @@ package main
 
 import (
 	"context"
-	"gae-test-project/firebase"
-	"gae-test-project/handler"
-	"gae-test-project/util"
 	"log"
 
 	"cloud.google.com/go/datastore"
 	"github.com/gin-gonic/gin"
 	"google.golang.org/api/iam/v1"
+
+	"github.com/yusuke0701/gae-test-project/firebase"
+	"github.com/yusuke0701/gae-test-project/handler"
+	"github.com/yusuke0701/gae-test-project/util"
 )
 
 func main() {

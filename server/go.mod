@@ -1,4 +1,4 @@
-module gae-test-project
+module github.com/yusuke0701/gae-test-project
 
 go 1.12
 

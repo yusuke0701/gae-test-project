@@ -1,10 +1,11 @@
 package handler
 
 import (
-	"gae-test-project/util"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+
+	"github.com/yusuke0701/gae-test-project/util"
 )
 
 const bucketName = "asada-test"

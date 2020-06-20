@@ -3,12 +3,13 @@ package store
 import (
 	"context"
 	"fmt"
-	"gae-test-project/model"
-	"gae-test-project/util"
 	"time"
 
 	"cloud.google.com/go/datastore"
 	"google.golang.org/api/iterator"
+
+	"github.com/yusuke0701/gae-test-project/model"
+	"github.com/yusuke0701/gae-test-project/util"
 )
 
 // Comment は、コメントのDB操作を担保する

@@ -6,9 +6,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"gae-test-project/firebase"
-	"gae-test-project/model"
-	"gae-test-project/util"
+	"github.com/yusuke0701/gae-test-project/firebase"
+	"github.com/yusuke0701/gae-test-project/model"
+	"github.com/yusuke0701/gae-test-project/util"
 )
 
 // Users is handler bundle

@@ -3,11 +3,12 @@ package store
 import (
 	"context"
 	"fmt"
-	"gae-test-project/model"
-	"gae-test-project/util"
 	"time"
 
 	"cloud.google.com/go/datastore"
+
+	"github.com/yusuke0701/gae-test-project/model"
+	"github.com/yusuke0701/gae-test-project/util"
 )
 
 // Account は、アカウント情報のDB操作を担保する
