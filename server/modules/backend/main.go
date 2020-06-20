@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"gae-test-project/firebase"
 	"gae-test-project/handler"
 	"gae-test-project/util"
 	"log"
@@ -31,6 +32,10 @@ func main() {
 				log.Fatalf("Failed to connect iamService: %v", err)
 			}
 			util.IAMService = is
+
+			if err := firebase.Setup(ctx, "AIzaSyCEdlcKinO_em8f_ymWrE3_qAkaMLftNms"); err != nil {
+				log.Fatalf("Failed to connect firebase: %v", err)
+			}
 		}
 	}
 	// routing
