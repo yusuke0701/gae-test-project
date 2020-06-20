@@ -2,12 +2,13 @@ package handler
 
 import (
 	"fmt"
-	"gae-test-project/model"
-	"gae-test-project/store"
-	"gae-test-project/util"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+
+	"github.com/yusuke0701/gae-test-project/model"
+	"github.com/yusuke0701/gae-test-project/store"
+	"github.com/yusuke0701/gae-test-project/util"
 )
 
 // Comments is handler bundle

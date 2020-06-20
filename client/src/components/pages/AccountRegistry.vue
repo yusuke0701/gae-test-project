@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { insertAccount } from "../service/account";
+import { insertAccount } from "@/service/account";
 export default {
   data() {
     return {

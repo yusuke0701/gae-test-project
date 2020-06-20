@@ -2,17 +2,16 @@ package main
 
 import (
 	"context"
-	"fmt"
-	"gae-test-project/handler"
-	"gae-test-project/util"
 	"log"
 
 	"cloud.google.com/go/datastore"
 	"github.com/gin-gonic/gin"
 	"google.golang.org/api/iam/v1"
-)
 
-const apiVersion = "v1"
+	"github.com/yusuke0701/gae-test-project/firebase"
+	"github.com/yusuke0701/gae-test-project/handler"
+	"github.com/yusuke0701/gae-test-project/util"
+)
 
 func main() {
 	// connection
@@ -31,6 +30,10 @@ func main() {
 				log.Fatalf("Failed to connect iamService: %v", err)
 			}
 			util.IAMService = is
+
+			if err := firebase.Setup(ctx, "AIzaSyCEdlcKinO_em8f_ymWrE3_qAkaMLftNms"); err != nil {
+				log.Fatalf("Failed to connect firebase: %v", err)
+			}
 		}
 	}
 	// routing
@@ -41,7 +44,7 @@ func main() {
 		router.Use(setEnv())
 
 		{
-			api := router.Group(fmt.Sprintf("/api/%s", apiVersion))
+			api := router.Group(handler.APIPathPrefix)
 
 			// rest api
 			handler.Accounts(api.Group("/accounts"))
@@ -51,6 +54,7 @@ func main() {
 
 			// other api
 			handler.SignedURLs(api.Group("/url"))
+			handler.Users(api.Group("/users"))
 		}
 
 		if err := router.Run(":8080"); err != nil {

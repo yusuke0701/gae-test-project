@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { getAllComment } from "../service/comment";
+import { getAllComment } from "@/service/comment";
 export default {
   data() {
     return { commentList: [] };

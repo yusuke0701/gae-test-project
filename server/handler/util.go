@@ -35,3 +35,7 @@ func (p *param) tagID(ctx *gin.Context) (int64, error) {
 func (p *param) threadID(ctx *gin.Context) string {
 	return ctx.Param("thread_id")
 }
+
+func (p *param) userID(ctx *gin.Context) string {
+	return ctx.Param("uid")
+}
