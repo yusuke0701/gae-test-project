@@ -1,6 +1,3 @@
 runtime: go113
 
 main: ./modules/default
-
-env_variables:
-  GOOGLE_CLOUD_PROJECT: "hoge-hoge-123456789"
