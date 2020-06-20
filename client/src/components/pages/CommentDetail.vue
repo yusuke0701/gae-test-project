@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { getComment, updateComment } from "../service/comment";
+import { getComment, updateComment } from "@/service/comment";
 export default {
   data() {
     return {

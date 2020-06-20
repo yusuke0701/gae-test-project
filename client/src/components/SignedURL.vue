@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { getURLToCSVDonwload } from "../service/signedurl";
+import { getURLToCSVDonwload } from "@/service/signedurl";
 export default {
   data() {
     return {

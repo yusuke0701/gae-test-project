@@ -15,7 +15,7 @@
 
 <script>
 import TheHeader from "@/components/organisms/TheHeader";
-import TagsSearcher from "@/components/TagsSearcher";
+import TagsSearcher from "@/components/pages/TagsSearcher";
 export default {
   data() {
     return {
