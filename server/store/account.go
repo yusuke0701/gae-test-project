@@ -8,8 +8,8 @@ import (
 	"cloud.google.com/go/datastore"
 
 	"github.com/yusuke0701/gae-test-project/model"
-	"github.com/yusuke0701/gae-test-project/util"
 	errs "github.com/yusuke0701/goutils/error"
+	"github.com/yusuke0701/goutils/manufacture"
 )
 
 // Account は、アカウント情報のDB操作を担保する
@@ -97,7 +97,7 @@ func (aStore *Account) newKey(id string) *datastore.Key {
 }
 
 func (aStore *Account) newID() (string, error) {
-	return util.NewUUID()
+	return manufacture.NewUUID()
 }
 
 func (aStore *Account) canInsert(ctx context.Context, id string) error {

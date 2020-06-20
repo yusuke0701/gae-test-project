@@ -8,8 +8,8 @@ import (
 	"cloud.google.com/go/datastore"
 
 	"github.com/yusuke0701/gae-test-project/model"
-	"github.com/yusuke0701/gae-test-project/util"
 	errs "github.com/yusuke0701/goutils/error"
+	"github.com/yusuke0701/goutils/manufacture"
 )
 
 // Thread は、スレッド情報のDB操作を担保する
@@ -97,7 +97,7 @@ func (tStore *Thread) newKey(id string) *datastore.Key {
 }
 
 func (tStore *Thread) newID() (string, error) {
-	return util.NewUUID()
+	return manufacture.NewUUID()
 }
 
 func (tStore *Thread) canInsert(ctx context.Context, t *model.Thread) error {
