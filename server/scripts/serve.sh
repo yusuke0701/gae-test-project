@@ -2,6 +2,8 @@
 
 cd `dirname $0`
 
+export GOOGLE_CLOUD_PROJECT=hoge-hoge-123456789
+
 # データストアエミュレータの設定
 # `gcloud beta emulators datastore env-init` の実行結果を貼る
 # https://cloud.google.com/sdk/gcloud/reference/beta/emulators/datastore/env-init?hl=ja
