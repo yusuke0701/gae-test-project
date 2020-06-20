@@ -6,9 +6,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/yusuke0701/gae-test-project/firebase"
 	"github.com/yusuke0701/gae-test-project/model"
 	"github.com/yusuke0701/gae-test-project/util"
+	"github.com/yusuke0701/goutils/firebase"
 )
 
 // Users is handler bundle
@@ -39,7 +39,7 @@ func createUser(ctx *gin.Context) {
 func getUser(ctx *gin.Context) {
 	uid := paramParser.userID(ctx)
 
-	u, err := firebase.GetUser(ctx, uid)
+	u, err := firebase.GetUserByUID(ctx, uid)
 	if err != nil {
 		err := fmt.Errorf("failed to create user: %v", err)
 		util.LogError(ctx.Request.Context(), err.Error)
