@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/yusuke0701/gae-test-project/handler"
-	"github.com/yusuke0701/gae-test-project/util"
+	"github.com/yusuke0701/goutils/gcp"
 )
 
 func main() {
@@ -40,7 +40,7 @@ func main() {
 func setEnv() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		r := c.Request
-		util.SetTraceID(r)
+		gcp.SetTraceID(r)
 
 		c.Next()
 	}

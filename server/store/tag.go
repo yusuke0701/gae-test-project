@@ -9,8 +9,8 @@ import (
 	"google.golang.org/api/iterator"
 
 	"github.com/yusuke0701/gae-test-project/model"
-	"github.com/yusuke0701/gae-test-project/util"
 	errs "github.com/yusuke0701/goutils/error"
+	"github.com/yusuke0701/goutils/gcp"
 )
 
 // Tag は、タグのDB操作を担保する
@@ -121,7 +121,7 @@ func (tStore *Tag) newID(ctx context.Context) (int64, error) {
 		iter := datastoreClient.Run(ctx, q)
 		if _, err := iter.Next(latest); err != nil {
 			if err == iterator.Done {
-				util.LogInfof(ctx, "start a new thread")
+				gcp.LogInfof(ctx, "start a new thread")
 				return 1, nil
 			}
 			return 0, err

@@ -8,8 +8,8 @@ import (
 
 	"github.com/yusuke0701/gae-test-project/model"
 	"github.com/yusuke0701/gae-test-project/store"
-	"github.com/yusuke0701/gae-test-project/util"
 	errs "github.com/yusuke0701/goutils/error"
+	"github.com/yusuke0701/goutils/gcp"
 )
 
 // Comments is handler bundle
@@ -24,13 +24,13 @@ func Comments(g *gin.RouterGroup) {
 func insertComment(ctx *gin.Context) {
 	comment := new(model.Comment)
 	if err := ctx.Bind(comment); err != nil {
-		util.LogError(ctx.Request.Context(), err.Error)
+		gcp.LogError(ctx.Request.Context(), err.Error)
 		ctx.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	if err := (&store.Comment{}).Insert(ctx.Request.Context(), comment); err != nil {
-		util.LogError(ctx.Request.Context(), err.Error)
+		gcp.LogError(ctx.Request.Context(), err.Error)
 		switch err.(type) {
 		case *errs.ErrConflict:
 			ctx.String(http.StatusConflict, err.Error())
@@ -45,14 +45,14 @@ func insertComment(ctx *gin.Context) {
 func getComment(ctx *gin.Context) {
 	commentID, err := paramParser.commentID(ctx)
 	if err != nil {
-		util.LogError(ctx.Request.Context(), err.Error)
+		gcp.LogError(ctx.Request.Context(), err.Error)
 		ctx.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	comment, err := (&store.Comment{}).Get(ctx.Request.Context(), commentID)
 	if err != nil {
-		util.LogError(ctx.Request.Context(), err.Error)
+		gcp.LogError(ctx.Request.Context(), err.Error)
 		switch err.(type) {
 		case *errs.ErrNotFound:
 			ctx.String(http.StatusNotFound, err.Error())
@@ -67,7 +67,7 @@ func getComment(ctx *gin.Context) {
 func listComment(ctx *gin.Context) {
 	comments, err := (&store.Comment{}).List(ctx.Request.Context())
 	if err != nil {
-		util.LogError(ctx.Request.Context(), err.Error)
+		gcp.LogError(ctx.Request.Context(), err.Error)
 		ctx.String(http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -77,26 +77,26 @@ func listComment(ctx *gin.Context) {
 func updateComment(ctx *gin.Context) {
 	comment := new(model.Comment)
 	if err := ctx.Bind(comment); err != nil {
-		util.LogError(ctx.Request.Context(), err.Error)
+		gcp.LogError(ctx.Request.Context(), err.Error)
 		ctx.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	commentID, err := paramParser.commentID(ctx)
 	if err != nil {
-		util.LogError(ctx.Request.Context(), err.Error)
+		gcp.LogError(ctx.Request.Context(), err.Error)
 		ctx.String(http.StatusBadRequest, err.Error())
 		return
 	}
 	if commentID != comment.ID {
 		err := fmt.Errorf("invalid id. paramID = %d, bodyId = %d", commentID, comment.ID)
-		util.LogError(ctx.Request.Context(), err.Error)
+		gcp.LogError(ctx.Request.Context(), err.Error)
 		ctx.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	if err := (&store.Comment{}).Update(ctx.Request.Context(), comment); err != nil {
-		util.LogError(ctx.Request.Context(), err.Error)
+		gcp.LogError(ctx.Request.Context(), err.Error)
 		switch err.(type) {
 		case *errs.ErrNotFound:
 			ctx.String(http.StatusNotFound, err.Error())
@@ -113,13 +113,13 @@ func updateComment(ctx *gin.Context) {
 func deleteComment(ctx *gin.Context) {
 	commentID, err := paramParser.commentID(ctx)
 	if err != nil {
-		util.LogError(ctx.Request.Context(), err.Error)
+		gcp.LogError(ctx.Request.Context(), err.Error)
 		ctx.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	if err := (&store.Comment{}).Delete(ctx.Request.Context(), commentID); err != nil {
-		util.LogError(ctx.Request.Context(), err.Error)
+		gcp.LogError(ctx.Request.Context(), err.Error)
 		switch err.(type) {
 		case *errs.ErrNotFound:
 			ctx.String(http.StatusNotFound, err.Error())

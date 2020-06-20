@@ -8,8 +8,8 @@ import (
 
 	"github.com/yusuke0701/gae-test-project/model"
 	"github.com/yusuke0701/gae-test-project/store"
-	"github.com/yusuke0701/gae-test-project/util"
 	errs "github.com/yusuke0701/goutils/error"
+	"github.com/yusuke0701/goutils/gcp"
 )
 
 // Tags is handler bundle
@@ -24,13 +24,13 @@ func Tags(g *gin.RouterGroup) {
 func insertTag(ctx *gin.Context) {
 	tag := new(model.Tag)
 	if err := ctx.Bind(tag); err != nil {
-		util.LogError(ctx.Request.Context(), err.Error)
+		gcp.LogError(ctx.Request.Context(), err.Error)
 		ctx.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	if err := (&store.Tag{}).Insert(ctx.Request.Context(), tag); err != nil {
-		util.LogError(ctx.Request.Context(), err.Error)
+		gcp.LogError(ctx.Request.Context(), err.Error)
 		switch err.(type) {
 		case *errs.ErrConflict:
 			ctx.String(http.StatusConflict, err.Error())
@@ -45,14 +45,14 @@ func insertTag(ctx *gin.Context) {
 func getTag(ctx *gin.Context) {
 	tagID, err := paramParser.tagID(ctx)
 	if err != nil {
-		util.LogError(ctx.Request.Context(), err.Error)
+		gcp.LogError(ctx.Request.Context(), err.Error)
 		ctx.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	tag, err := (&store.Tag{}).Get(ctx.Request.Context(), tagID)
 	if err != nil {
-		util.LogError(ctx.Request.Context(), err.Error)
+		gcp.LogError(ctx.Request.Context(), err.Error)
 		switch err.(type) {
 		case *errs.ErrNotFound:
 			ctx.String(http.StatusNotFound, err.Error())
@@ -67,7 +67,7 @@ func getTag(ctx *gin.Context) {
 func listTag(ctx *gin.Context) {
 	tags, err := (&store.Tag{}).List(ctx.Request.Context())
 	if err != nil {
-		util.LogError(ctx.Request.Context(), err.Error)
+		gcp.LogError(ctx.Request.Context(), err.Error)
 		ctx.String(http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -77,26 +77,26 @@ func listTag(ctx *gin.Context) {
 func updateTag(ctx *gin.Context) {
 	tag := new(model.Tag)
 	if err := ctx.Bind(tag); err != nil {
-		util.LogError(ctx.Request.Context(), err.Error)
+		gcp.LogError(ctx.Request.Context(), err.Error)
 		ctx.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	tagID, err := paramParser.tagID(ctx)
 	if err != nil {
-		util.LogError(ctx.Request.Context(), err.Error)
+		gcp.LogError(ctx.Request.Context(), err.Error)
 		ctx.String(http.StatusBadRequest, err.Error())
 		return
 	}
 	if tagID != tag.ID {
 		err := fmt.Errorf("invalid id. paramID = %d, bodyId = %d", tagID, tag.ID)
-		util.LogError(ctx.Request.Context(), err.Error)
+		gcp.LogError(ctx.Request.Context(), err.Error)
 		ctx.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	if err := (&store.Tag{}).Update(ctx.Request.Context(), tag); err != nil {
-		util.LogError(ctx.Request.Context(), err.Error)
+		gcp.LogError(ctx.Request.Context(), err.Error)
 		switch err.(type) {
 		case *errs.ErrNotFound:
 			ctx.String(http.StatusNotFound, err.Error())
@@ -113,13 +113,13 @@ func updateTag(ctx *gin.Context) {
 func deleteTag(ctx *gin.Context) {
 	tagID, err := paramParser.tagID(ctx)
 	if err != nil {
-		util.LogError(ctx.Request.Context(), err.Error)
+		gcp.LogError(ctx.Request.Context(), err.Error)
 		ctx.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	if err := (&store.Tag{}).Delete(ctx.Request.Context(), tagID); err != nil {
-		util.LogError(ctx.Request.Context(), err.Error)
+		gcp.LogError(ctx.Request.Context(), err.Error)
 		switch err.(type) {
 		case *errs.ErrNotFound:
 			ctx.String(http.StatusNotFound, err.Error())
