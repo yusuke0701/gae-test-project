@@ -9,6 +9,7 @@ import (
 	"github.com/yusuke0701/gae-test-project/model"
 	"github.com/yusuke0701/gae-test-project/store"
 	"github.com/yusuke0701/gae-test-project/util"
+	errs "github.com/yusuke0701/goutils/error"
 )
 
 // Accounts is handler bundle
@@ -34,7 +35,7 @@ func insertAccount(ctx *gin.Context) {
 	if err := (&store.Account{}).Insert(ctx.Request.Context(), a); err != nil {
 		util.LogError(ctx.Request.Context(), err.Error)
 		switch err.(type) {
-		case *util.ErrConflict:
+		case *errs.ErrConflict:
 			ctx.String(http.StatusConflict, err.Error())
 		default:
 			ctx.String(http.StatusInternalServerError, err.Error())
@@ -51,7 +52,7 @@ func getAccount(ctx *gin.Context) {
 	if err != nil {
 		util.LogError(ctx.Request.Context(), err.Error)
 		switch err.(type) {
-		case *util.ErrNotFound:
+		case *errs.ErrNotFound:
 			ctx.String(http.StatusNotFound, err.Error())
 		default:
 			ctx.String(http.StatusInternalServerError, err.Error())
@@ -90,9 +91,9 @@ func updateAccount(ctx *gin.Context) {
 	if err := (&store.Account{}).Update(ctx.Request.Context(), account); err != nil {
 		util.LogError(ctx.Request.Context(), err.Error)
 		switch err.(type) {
-		case *util.ErrNotFound:
+		case *errs.ErrNotFound:
 			ctx.String(http.StatusNotFound, err.Error())
-		case *util.ErrConflict:
+		case *errs.ErrConflict:
 			ctx.String(http.StatusConflict, err.Error())
 		default:
 			ctx.String(http.StatusInternalServerError, err.Error())
@@ -108,7 +109,7 @@ func deleteAccount(ctx *gin.Context) {
 	if err := (&store.Account{}).Delete(ctx.Request.Context(), accountID); err != nil {
 		util.LogError(ctx.Request.Context(), err.Error)
 		switch err.(type) {
-		case *util.ErrNotFound:
+		case *errs.ErrNotFound:
 			ctx.String(http.StatusNotFound, err.Error())
 		default:
 			ctx.String(http.StatusInternalServerError, err.Error())

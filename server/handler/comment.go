@@ -9,6 +9,7 @@ import (
 	"github.com/yusuke0701/gae-test-project/model"
 	"github.com/yusuke0701/gae-test-project/store"
 	"github.com/yusuke0701/gae-test-project/util"
+	errs "github.com/yusuke0701/goutils/error"
 )
 
 // Comments is handler bundle
@@ -31,7 +32,7 @@ func insertComment(ctx *gin.Context) {
 	if err := (&store.Comment{}).Insert(ctx.Request.Context(), comment); err != nil {
 		util.LogError(ctx.Request.Context(), err.Error)
 		switch err.(type) {
-		case *util.ErrConflict:
+		case *errs.ErrConflict:
 			ctx.String(http.StatusConflict, err.Error())
 		default:
 			ctx.String(http.StatusInternalServerError, err.Error())
@@ -53,7 +54,7 @@ func getComment(ctx *gin.Context) {
 	if err != nil {
 		util.LogError(ctx.Request.Context(), err.Error)
 		switch err.(type) {
-		case *util.ErrNotFound:
+		case *errs.ErrNotFound:
 			ctx.String(http.StatusNotFound, err.Error())
 		default:
 			ctx.String(http.StatusInternalServerError, err.Error())
@@ -97,9 +98,9 @@ func updateComment(ctx *gin.Context) {
 	if err := (&store.Comment{}).Update(ctx.Request.Context(), comment); err != nil {
 		util.LogError(ctx.Request.Context(), err.Error)
 		switch err.(type) {
-		case *util.ErrNotFound:
+		case *errs.ErrNotFound:
 			ctx.String(http.StatusNotFound, err.Error())
-		case *util.ErrConflict:
+		case *errs.ErrConflict:
 			ctx.String(http.StatusConflict, err.Error())
 		default:
 			ctx.String(http.StatusInternalServerError, err.Error())
@@ -120,7 +121,7 @@ func deleteComment(ctx *gin.Context) {
 	if err := (&store.Comment{}).Delete(ctx.Request.Context(), commentID); err != nil {
 		util.LogError(ctx.Request.Context(), err.Error)
 		switch err.(type) {
-		case *util.ErrNotFound:
+		case *errs.ErrNotFound:
 			ctx.String(http.StatusNotFound, err.Error())
 		default:
 			ctx.String(http.StatusInternalServerError, err.Error())

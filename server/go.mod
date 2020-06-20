@@ -7,6 +7,6 @@ require (
 	cloud.google.com/go/datastore v1.1.0
 	github.com/gin-gonic/gin v1.4.0
 	github.com/google/uuid v1.1.1
-	github.com/yusuke0701/goutils v0.0.0-20200620115432-116aa1157414
+	github.com/yusuke0701/goutils v0.0.0-20200620183017-a23dca198a52
 	google.golang.org/api v0.28.0
 )

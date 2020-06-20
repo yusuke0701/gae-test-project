@@ -9,6 +9,7 @@ import (
 	"github.com/yusuke0701/gae-test-project/model"
 	"github.com/yusuke0701/gae-test-project/store"
 	"github.com/yusuke0701/gae-test-project/util"
+	errs "github.com/yusuke0701/goutils/error"
 )
 
 // Tags is handler bundle
@@ -31,7 +32,7 @@ func insertTag(ctx *gin.Context) {
 	if err := (&store.Tag{}).Insert(ctx.Request.Context(), tag); err != nil {
 		util.LogError(ctx.Request.Context(), err.Error)
 		switch err.(type) {
-		case *util.ErrConflict:
+		case *errs.ErrConflict:
 			ctx.String(http.StatusConflict, err.Error())
 		default:
 			ctx.String(http.StatusInternalServerError, err.Error())
@@ -53,7 +54,7 @@ func getTag(ctx *gin.Context) {
 	if err != nil {
 		util.LogError(ctx.Request.Context(), err.Error)
 		switch err.(type) {
-		case *util.ErrNotFound:
+		case *errs.ErrNotFound:
 			ctx.String(http.StatusNotFound, err.Error())
 		default:
 			ctx.String(http.StatusInternalServerError, err.Error())
@@ -97,9 +98,9 @@ func updateTag(ctx *gin.Context) {
 	if err := (&store.Tag{}).Update(ctx.Request.Context(), tag); err != nil {
 		util.LogError(ctx.Request.Context(), err.Error)
 		switch err.(type) {
-		case *util.ErrNotFound:
+		case *errs.ErrNotFound:
 			ctx.String(http.StatusNotFound, err.Error())
-		case *util.ErrConflict:
+		case *errs.ErrConflict:
 			ctx.String(http.StatusConflict, err.Error())
 		default:
 			ctx.String(http.StatusInternalServerError, err.Error())
@@ -120,7 +121,7 @@ func deleteTag(ctx *gin.Context) {
 	if err := (&store.Tag{}).Delete(ctx.Request.Context(), tagID); err != nil {
 		util.LogError(ctx.Request.Context(), err.Error)
 		switch err.(type) {
-		case *util.ErrNotFound:
+		case *errs.ErrNotFound:
 			ctx.String(http.StatusNotFound, err.Error())
 		default:
 			ctx.String(http.StatusInternalServerError, err.Error())

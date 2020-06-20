@@ -9,6 +9,7 @@ import (
 
 	"github.com/yusuke0701/gae-test-project/model"
 	"github.com/yusuke0701/gae-test-project/util"
+	errs "github.com/yusuke0701/goutils/error"
 )
 
 // Account は、アカウント情報のDB操作を担保する
@@ -38,7 +39,7 @@ func (aStore *Account) Insert(ctx context.Context, a *model.Account) error {
 func (aStore *Account) Get(ctx context.Context, id string) (a *model.Account, err error) {
 	if err := datastoreClient.Get(ctx, aStore.newKey(id), a); err != nil {
 		if err == datastore.ErrNoSuchEntity {
-			return nil, &util.ErrNotFound{Msg: "no such entity"}
+			return nil, &errs.ErrNotFound{Msg: "no such entity"}
 		}
 		return nil, err
 	}
@@ -101,13 +102,13 @@ func (aStore *Account) newID() (string, error) {
 
 func (aStore *Account) canInsert(ctx context.Context, id string) error {
 	if _, err := aStore.Get(ctx, id); err != nil {
-		if _, ok := err.(*util.ErrNotFound); ok {
+		if _, ok := err.(*errs.ErrNotFound); ok {
 			// ok
 		} else {
 			return err
 		}
 	} else {
-		return &util.ErrConflict{Msg: fmt.Sprintf("invalid id = %s", id)}
+		return &errs.ErrConflict{Msg: fmt.Sprintf("invalid id = %s", id)}
 	}
 	return nil
 }
@@ -119,7 +120,7 @@ func (aStore *Account) canUpdate(ctx context.Context, new *model.Account) error 
 	}
 
 	if old.UpdatedAt.After(new.UpdatedAt) {
-		return &util.ErrConflict{Msg: fmt.Sprintf("invalid updateAt")}
+		return &errs.ErrConflict{Msg: fmt.Sprintf("invalid updateAt")}
 	}
 	return nil
 }

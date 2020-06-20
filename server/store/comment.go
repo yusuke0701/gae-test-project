@@ -10,6 +10,7 @@ import (
 
 	"github.com/yusuke0701/gae-test-project/model"
 	"github.com/yusuke0701/gae-test-project/util"
+	errs "github.com/yusuke0701/goutils/error"
 )
 
 // Comment は、コメントのDB操作を担保する
@@ -39,7 +40,7 @@ func (cStore *Comment) Insert(ctx context.Context, c *model.Comment) error {
 func (cStore *Comment) Get(ctx context.Context, id int64) (c *model.Comment, err error) {
 	if err := datastoreClient.Get(ctx, cStore.newKey(id), c); err != nil {
 		if err == datastore.ErrNoSuchEntity {
-			return nil, &util.ErrNotFound{Msg: "no such entity"}
+			return nil, &errs.ErrNotFound{Msg: "no such entity"}
 		}
 		return nil, err
 	}
@@ -116,13 +117,13 @@ func (cStore *Comment) newID(ctx context.Context) (int64, error) {
 
 func (cStore *Comment) canInsert(ctx context.Context, c *model.Comment) error {
 	if _, err := cStore.Get(ctx, c.ID); err != nil {
-		if _, ok := err.(*util.ErrNotFound); ok {
+		if _, ok := err.(*errs.ErrNotFound); ok {
 			// ok
 		} else {
 			return err
 		}
 	} else {
-		return &util.ErrConflict{Msg: fmt.Sprintf("invalid id = %d", c.ID)}
+		return &errs.ErrConflict{Msg: fmt.Sprintf("invalid id = %d", c.ID)}
 	}
 	if _, err := (&Thread{}).Get(ctx, c.ThreadID); err != nil {
 		return err
@@ -137,7 +138,7 @@ func (cStore *Comment) canUpdate(ctx context.Context, new *model.Comment) error 
 	}
 
 	if old.UpdatedAt.After(new.UpdatedAt) {
-		return &util.ErrConflict{Msg: fmt.Sprintf("invalid updateAt")}
+		return &errs.ErrConflict{Msg: fmt.Sprintf("invalid updateAt")}
 	}
 	return nil
 }

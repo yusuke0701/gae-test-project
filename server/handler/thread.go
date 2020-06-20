@@ -9,6 +9,7 @@ import (
 	"github.com/yusuke0701/gae-test-project/model"
 	"github.com/yusuke0701/gae-test-project/store"
 	"github.com/yusuke0701/gae-test-project/util"
+	errs "github.com/yusuke0701/goutils/error"
 )
 
 // Threads is handler bundle
@@ -31,7 +32,7 @@ func insertThread(ctx *gin.Context) {
 	if err := (&store.Thread{}).Insert(ctx.Request.Context(), thread); err != nil {
 		util.LogError(ctx.Request.Context(), err.Error)
 		switch err.(type) {
-		case *util.ErrConflict:
+		case *errs.ErrConflict:
 			ctx.String(http.StatusConflict, err.Error())
 		default:
 			ctx.String(http.StatusInternalServerError, err.Error())
@@ -48,7 +49,7 @@ func getThread(ctx *gin.Context) {
 	if err != nil {
 		util.LogError(ctx.Request.Context(), err.Error)
 		switch err.(type) {
-		case *util.ErrNotFound:
+		case *errs.ErrNotFound:
 			ctx.String(http.StatusNotFound, err.Error())
 		default:
 			ctx.String(http.StatusInternalServerError, err.Error())
@@ -87,9 +88,9 @@ func updateThread(ctx *gin.Context) {
 	if err := (&store.Thread{}).Update(ctx.Request.Context(), thread); err != nil {
 		util.LogError(ctx.Request.Context(), err.Error)
 		switch err.(type) {
-		case *util.ErrNotFound:
+		case *errs.ErrNotFound:
 			ctx.String(http.StatusNotFound, err.Error())
-		case *util.ErrConflict:
+		case *errs.ErrConflict:
 			ctx.String(http.StatusConflict, err.Error())
 		default:
 			ctx.String(http.StatusInternalServerError, err.Error())
@@ -105,7 +106,7 @@ func deleteThread(ctx *gin.Context) {
 	if err := (&store.Thread{}).Delete(ctx.Request.Context(), threadID); err != nil {
 		util.LogError(ctx.Request.Context(), err.Error)
 		switch err.(type) {
-		case *util.ErrNotFound:
+		case *errs.ErrNotFound:
 			ctx.String(http.StatusNotFound, err.Error())
 		default:
 			ctx.String(http.StatusInternalServerError, err.Error())

@@ -10,6 +10,7 @@ import (
 
 	"github.com/yusuke0701/gae-test-project/model"
 	"github.com/yusuke0701/gae-test-project/util"
+	errs "github.com/yusuke0701/goutils/error"
 )
 
 // Tag は、タグのDB操作を担保する
@@ -39,7 +40,7 @@ func (tStore *Tag) Insert(ctx context.Context, t *model.Tag) error {
 func (tStore *Tag) Get(ctx context.Context, id int64) (t *model.Tag, err error) {
 	if err := datastoreClient.Get(ctx, tStore.newKey(id), t); err != nil {
 		if err == datastore.ErrNoSuchEntity {
-			return nil, &util.ErrNotFound{Msg: "no such entity"}
+			return nil, &errs.ErrNotFound{Msg: "no such entity"}
 		}
 		return nil, err
 	}
@@ -54,7 +55,7 @@ func (tStore *Tag) GetMulti(ctx context.Context, ids []int64) (ts []*model.Tag, 
 	}
 	if err := datastoreClient.GetMulti(ctx, keys, ts); err != nil {
 		if err == datastore.ErrNoSuchEntity {
-			return nil, &util.ErrNotFound{Msg: "no such entity"}
+			return nil, &errs.ErrNotFound{Msg: "no such entity"}
 		}
 		return nil, err
 	}
@@ -131,13 +132,13 @@ func (tStore *Tag) newID(ctx context.Context) (int64, error) {
 
 func (tStore *Tag) canInsert(ctx context.Context, id int64) error {
 	if _, err := tStore.Get(ctx, id); err != nil {
-		if _, ok := err.(*util.ErrNotFound); ok {
+		if _, ok := err.(*errs.ErrNotFound); ok {
 			// ok
 		} else {
 			return err
 		}
 	} else {
-		return &util.ErrConflict{Msg: fmt.Sprintf("invalid id = %d", id)}
+		return &errs.ErrConflict{Msg: fmt.Sprintf("invalid id = %d", id)}
 	}
 	return nil
 }
@@ -149,7 +150,7 @@ func (tStore *Tag) canUpdate(ctx context.Context, new *model.Tag) error {
 	}
 
 	if old.UpdatedAt.After(new.UpdatedAt) {
-		return &util.ErrConflict{Msg: fmt.Sprintf("invalid updateAt")}
+		return &errs.ErrConflict{Msg: fmt.Sprintf("invalid updateAt")}
 	}
 	return nil
 }
