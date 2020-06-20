@@ -3,5 +3,8 @@ runtime: go113
 service: backend
 main: ./modules/backend
 
-env_variables:
-  GOOGLE_CLOUD_PROJECT: "hoge-hoge-123456789"
+handlers:
+  - url: /.*
+    script: auto
+    secure: always
+    redirect_http_response_code: 301
