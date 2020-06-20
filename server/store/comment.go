@@ -29,7 +29,7 @@ func (cStore *Comment) Insert(ctx context.Context, c *model.Comment) error {
 
 	c.CreatedAt = time.Now()
 
-	if _, err := util.DatastoreClient.Put(ctx, cStore.newKey(c.ID), c); err != nil {
+	if _, err := datastoreClient.Put(ctx, cStore.newKey(c.ID), c); err != nil {
 		return err
 	}
 	return nil
@@ -37,7 +37,7 @@ func (cStore *Comment) Insert(ctx context.Context, c *model.Comment) error {
 
 // Get は、コメントを一件取得する
 func (cStore *Comment) Get(ctx context.Context, id int64) (c *model.Comment, err error) {
-	if err := util.DatastoreClient.Get(ctx, cStore.newKey(id), c); err != nil {
+	if err := datastoreClient.Get(ctx, cStore.newKey(id), c); err != nil {
 		if err == datastore.ErrNoSuchEntity {
 			return nil, &util.ErrNotFound{Msg: "no such entity"}
 		}
@@ -49,7 +49,7 @@ func (cStore *Comment) Get(ctx context.Context, id int64) (c *model.Comment, err
 // List は、コメントを一覧取得する
 func (cStore *Comment) List(ctx context.Context) (cs []*model.Comment, err error) {
 	q := datastore.NewQuery(cStore.kind())
-	_, err = util.DatastoreClient.GetAll(ctx, q, &cs)
+	_, err = datastoreClient.GetAll(ctx, q, &cs)
 	return
 }
 
@@ -61,7 +61,7 @@ func (cStore *Comment) Update(ctx context.Context, c *model.Comment) error {
 
 	c.UpdatedAt = time.Now()
 
-	if _, err := util.DatastoreClient.Put(ctx, cStore.newKey(c.ID), c); err != nil {
+	if _, err := datastoreClient.Put(ctx, cStore.newKey(c.ID), c); err != nil {
 		return err
 	}
 	return nil
@@ -80,7 +80,7 @@ func (cStore *Comment) Delete(ctx context.Context, id int64) error {
 
 	c.DeletedAt = time.Now()
 
-	if _, err := util.DatastoreClient.Put(ctx, cStore.newKey(c.ID), c); err != nil {
+	if _, err := datastoreClient.Put(ctx, cStore.newKey(c.ID), c); err != nil {
 		return err
 	}
 	return nil
@@ -102,7 +102,7 @@ func (cStore *Comment) newID(ctx context.Context) (int64, error) {
 		q := datastore.NewQuery(cStore.kind())
 		q = q.Order("-ID")
 
-		iter := util.DatastoreClient.Run(ctx, q)
+		iter := datastoreClient.Run(ctx, q)
 		if _, err := iter.Next(latest); err != nil {
 			if err == iterator.Done {
 				util.LogInfof(ctx, "start a new thread")

@@ -1,65 +1,37 @@
 package main
 
 import (
-	"context"
 	"log"
 
-	"cloud.google.com/go/datastore"
 	"github.com/gin-gonic/gin"
-	"google.golang.org/api/iam/v1"
 
 	"github.com/yusuke0701/gae-test-project/handler"
 	"github.com/yusuke0701/gae-test-project/util"
-	"github.com/yusuke0701/goutils/firebase"
 )
 
 func main() {
-	// connection
+	router := gin.Default()
+
+	// middleware
+	router.Use(setEnv())
+
+	// set api routing
 	{
-		ctx := context.Background()
+		api := router.Group(handler.APIPathPrefix)
 
-		dc, err := datastore.NewClient(ctx, util.ProjectID)
-		if err != nil {
-			log.Fatalf("Failed to connect datastore: %v", err)
-		}
-		util.DatastoreClient = dc
+		// rest api
+		handler.Accounts(api.Group("/accounts"))
+		handler.Comments(api.Group("/comments"))
+		handler.Tags(api.Group("/tags"))
+		handler.Threads(api.Group("/threads"))
 
-		if !util.IsLocal {
-			is, err := iam.NewService(ctx)
-			if err != nil {
-				log.Fatalf("Failed to connect iamService: %v", err)
-			}
-			util.IAMService = is
-
-			if err := firebase.Setup(ctx, "AIzaSyCEdlcKinO_em8f_ymWrE3_qAkaMLftNms"); err != nil {
-				log.Fatalf("Failed to connect firebase: %v", err)
-			}
-		}
+		// other api
+		handler.SignedURLs(api.Group("/url"))
+		handler.Users(api.Group("/users"))
 	}
-	// routing
-	{
-		router := gin.Default()
 
-		// middleware
-		router.Use(setEnv())
-
-		{
-			api := router.Group(handler.APIPathPrefix)
-
-			// rest api
-			handler.Accounts(api.Group("/accounts"))
-			handler.Comments(api.Group("/comments"))
-			handler.Tags(api.Group("/tags"))
-			handler.Threads(api.Group("/threads"))
-
-			// other api
-			handler.SignedURLs(api.Group("/url"))
-			handler.Users(api.Group("/users"))
-		}
-
-		if err := router.Run(":8080"); err != nil {
-			log.Fatalf("Failed to create client: %v", err)
-		}
+	if err := router.Run(":8080"); err != nil {
+		log.Fatalf("Failed to create client: %v", err)
 	}
 }
 

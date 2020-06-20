@@ -28,7 +28,7 @@ func (tStore *Thread) Insert(ctx context.Context, t *model.Thread) error {
 
 	t.CreatedAt = time.Now()
 
-	if _, err := util.DatastoreClient.Put(ctx, tStore.newKey(t.ID), t); err != nil {
+	if _, err := datastoreClient.Put(ctx, tStore.newKey(t.ID), t); err != nil {
 		return err
 	}
 	return nil
@@ -36,7 +36,7 @@ func (tStore *Thread) Insert(ctx context.Context, t *model.Thread) error {
 
 // Get は、スレッドを一件取得する
 func (tStore *Thread) Get(ctx context.Context, id string) (t *model.Thread, err error) {
-	if err := util.DatastoreClient.Get(ctx, tStore.newKey(id), t); err != nil {
+	if err := datastoreClient.Get(ctx, tStore.newKey(id), t); err != nil {
 		if err == datastore.ErrNoSuchEntity {
 			return nil, &util.ErrNotFound{Msg: "no such entity"}
 		}
@@ -48,7 +48,7 @@ func (tStore *Thread) Get(ctx context.Context, id string) (t *model.Thread, err 
 // List は、スレッドを一覧取得する
 func (tStore *Thread) List(ctx context.Context) (ts []*model.Thread, err error) {
 	q := datastore.NewQuery(tStore.kind())
-	_, err = util.DatastoreClient.GetAll(ctx, q, &ts)
+	_, err = datastoreClient.GetAll(ctx, q, &ts)
 	return
 }
 
@@ -60,7 +60,7 @@ func (tStore *Thread) Update(ctx context.Context, t *model.Thread) error {
 
 	t.UpdatedAt = time.Now()
 
-	if _, err := util.DatastoreClient.Put(ctx, tStore.newKey(t.ID), t); err != nil {
+	if _, err := datastoreClient.Put(ctx, tStore.newKey(t.ID), t); err != nil {
 		return err
 	}
 	return nil
@@ -79,7 +79,7 @@ func (tStore *Thread) Delete(ctx context.Context, id string) error {
 
 	t.DeletedAt = time.Now()
 
-	if _, err := util.DatastoreClient.Put(ctx, tStore.newKey(t.ID), t); err != nil {
+	if _, err := datastoreClient.Put(ctx, tStore.newKey(t.ID), t); err != nil {
 		return err
 	}
 	return nil

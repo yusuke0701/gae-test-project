@@ -29,7 +29,7 @@ func (tStore *Tag) Insert(ctx context.Context, t *model.Tag) error {
 
 	t.CreatedAt = time.Now()
 
-	if _, err := util.DatastoreClient.Put(ctx, tStore.newKey(t.ID), t); err != nil {
+	if _, err := datastoreClient.Put(ctx, tStore.newKey(t.ID), t); err != nil {
 		return err
 	}
 	return nil
@@ -37,7 +37,7 @@ func (tStore *Tag) Insert(ctx context.Context, t *model.Tag) error {
 
 // Get は、タグを一件取得する
 func (tStore *Tag) Get(ctx context.Context, id int64) (t *model.Tag, err error) {
-	if err := util.DatastoreClient.Get(ctx, tStore.newKey(id), t); err != nil {
+	if err := datastoreClient.Get(ctx, tStore.newKey(id), t); err != nil {
 		if err == datastore.ErrNoSuchEntity {
 			return nil, &util.ErrNotFound{Msg: "no such entity"}
 		}
@@ -52,7 +52,7 @@ func (tStore *Tag) GetMulti(ctx context.Context, ids []int64) (ts []*model.Tag, 
 	for _, t := range ts {
 		keys = append(keys, tStore.newKey(t.ID))
 	}
-	if err := util.DatastoreClient.GetMulti(ctx, keys, ts); err != nil {
+	if err := datastoreClient.GetMulti(ctx, keys, ts); err != nil {
 		if err == datastore.ErrNoSuchEntity {
 			return nil, &util.ErrNotFound{Msg: "no such entity"}
 		}
@@ -64,7 +64,7 @@ func (tStore *Tag) GetMulti(ctx context.Context, ids []int64) (ts []*model.Tag, 
 // List は、タグを一覧取得する
 func (tStore *Tag) List(ctx context.Context) (ts []*model.Tag, err error) {
 	q := datastore.NewQuery(tStore.kind())
-	_, err = util.DatastoreClient.GetAll(ctx, q, &ts)
+	_, err = datastoreClient.GetAll(ctx, q, &ts)
 	return
 }
 
@@ -76,7 +76,7 @@ func (tStore *Tag) Update(ctx context.Context, t *model.Tag) error {
 
 	t.UpdatedAt = time.Now()
 
-	if _, err := util.DatastoreClient.Put(ctx, tStore.newKey(t.ID), t); err != nil {
+	if _, err := datastoreClient.Put(ctx, tStore.newKey(t.ID), t); err != nil {
 		return err
 	}
 	return nil
@@ -95,7 +95,7 @@ func (tStore *Tag) Delete(ctx context.Context, id int64) error {
 
 	t.DeletedAt = time.Now()
 
-	if _, err := util.DatastoreClient.Put(ctx, tStore.newKey(t.ID), t); err != nil {
+	if _, err := datastoreClient.Put(ctx, tStore.newKey(t.ID), t); err != nil {
 		return err
 	}
 	return nil
@@ -117,7 +117,7 @@ func (tStore *Tag) newID(ctx context.Context) (int64, error) {
 		q := datastore.NewQuery(tStore.kind()).KeysOnly()
 		q = q.Order("-ID")
 
-		iter := util.DatastoreClient.Run(ctx, q)
+		iter := datastoreClient.Run(ctx, q)
 		if _, err := iter.Next(latest); err != nil {
 			if err == iterator.Done {
 				util.LogInfof(ctx, "start a new thread")

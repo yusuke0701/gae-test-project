@@ -28,7 +28,7 @@ func (aStore *Account) Insert(ctx context.Context, a *model.Account) error {
 
 	a.CreatedAt = time.Now()
 
-	if _, err := util.DatastoreClient.Put(ctx, aStore.newKey(a.ID), a); err != nil {
+	if _, err := datastoreClient.Put(ctx, aStore.newKey(a.ID), a); err != nil {
 		return err
 	}
 	return nil
@@ -36,7 +36,7 @@ func (aStore *Account) Insert(ctx context.Context, a *model.Account) error {
 
 // Get は、アカウントを一件取得する
 func (aStore *Account) Get(ctx context.Context, id string) (a *model.Account, err error) {
-	if err := util.DatastoreClient.Get(ctx, aStore.newKey(id), a); err != nil {
+	if err := datastoreClient.Get(ctx, aStore.newKey(id), a); err != nil {
 		if err == datastore.ErrNoSuchEntity {
 			return nil, &util.ErrNotFound{Msg: "no such entity"}
 		}
@@ -48,7 +48,7 @@ func (aStore *Account) Get(ctx context.Context, id string) (a *model.Account, er
 // List は、アカウントを一覧取得する
 func (aStore *Account) List(ctx context.Context) (as []*model.Account, err error) {
 	q := datastore.NewQuery(aStore.kind())
-	_, err = util.DatastoreClient.GetAll(ctx, q, &as)
+	_, err = datastoreClient.GetAll(ctx, q, &as)
 	return
 }
 
@@ -60,7 +60,7 @@ func (aStore *Account) Update(ctx context.Context, a *model.Account) error {
 
 	a.UpdatedAt = time.Now()
 
-	if _, err := util.DatastoreClient.Put(ctx, aStore.newKey(a.ID), a); err != nil {
+	if _, err := datastoreClient.Put(ctx, aStore.newKey(a.ID), a); err != nil {
 		return err
 	}
 	return nil
@@ -79,7 +79,7 @@ func (aStore *Account) Delete(ctx context.Context, id string) error {
 
 	a.DeletedAt = time.Now()
 
-	if _, err := util.DatastoreClient.Put(ctx, aStore.newKey(a.ID), a); err != nil {
+	if _, err := datastoreClient.Put(ctx, aStore.newKey(a.ID), a); err != nil {
 		return err
 	}
 	return nil
