@@ -1,7 +1,6 @@
 runtime: go113
 
 service: backend
-main: ./modules/backend
 
 handlers:
   - url: /.*

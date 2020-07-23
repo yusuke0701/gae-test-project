@@ -8,7 +8,7 @@ import (
 	"cloud.google.com/go/datastore"
 	"google.golang.org/api/iterator"
 
-	"github.com/yusuke0701/gae-test-project/model"
+	"github.com/yusuke0701/gae-test-project/backend/db/datastore/model"
 	errs "github.com/yusuke0701/goutils/error"
 	"github.com/yusuke0701/goutils/gcp"
 )

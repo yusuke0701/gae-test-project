@@ -9,10 +9,10 @@ orbs:
 
 # executors
 executors:
-  go112-executor:
+  go113-executor:
     working_directory: ~/app
     docker:
-      - image: circleci/golang:1.12
+      - image: circleci/golang:1.13
     resource_class: small
   node-executor:
     working_directory: ~/app
@@ -38,27 +38,35 @@ commands:
 # jobs
 jobs:
   build-server:
-    executor: go112-executor
+    executor: go113-executor
+    parameters:
+      cache_key:
+        type: string
+      cache_version:
+        type: string
+      working_dir:
+        type: string
     steps:
       - checkout
       - restore_cache:
           keys:
-            - 'go-mod-{{ .Environment.CACHE_KEY }}-{{ checksum "server/go.mod" }}'
+            - << parameters.cache_key >>
+            - << parameters.cache_version >>
       - run:
           name: download go modules
           command: go mod download
-          working_directory: server
+          working_directory: << parameters.working_dir >>
       - save_cache:
-          key: 'go-mod-{{ .Environment.CACHE_KEY }}-{{ checksum "server/go.mod" }}'
+          key: << parameters.cache_key >>
           paths:
             - /go/pkg/mod
       - run:
           name: Install GolangCI-Lint
-          command: curl -sfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh| sh -s -- -b $(go env GOPATH)/bin v1.21.0
+          command: curl -sfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh| sh -s -- -b $(go env GOPATH)/bin v1.26.0
       - run:
           name: Run GolangCI-Lint
           command: golangci-lint run --disable-all --enable=goimports --enable=golint --enable=govet --enable=errcheck --enable=staticcheck ./...
-          working_directory: server
+          working_directory: << parameters.working_dir >>
 
   build-client:
     executor: node-executor
@@ -82,34 +90,59 @@ jobs:
           command: npm run build
           working_directory: client
       - persist_to_workspace:
-          root: server/static
+          root: server/frontend/static
           paths:
             - .
 
   deploy:
     executor: gcloud-executor
+    parameters:
+      yaml_name:
+        type: string
+      working_dir:
+        type: string
     steps:
       - run: gcloud --version
       - checkout
       - attach_workspace:
-          at: server/static
+          at: server/frontend/static
       - run:
           name: deploy
-          working_directory: server
           command: |
             PROJECT=$(gcloud config list --format="value(core.project)")
             VERSION=$(git rev-parse --short=8 HEAD)
-            gcloud app deploy --quiet app.yaml backend.yaml modules/dispatch.yaml --project=$PROJECT --version=$VERSION
+            gcloud app deploy --quiet << parameters.yaml_name >> ../dispatch.yaml --project=$PROJECT --version=$VERSION
+          working_directory: << parameters.working_dir >>
 
 # workflows
 workflows:
   build:
     jobs:
-      - build-server
+      - build-server:
+          name: build-frontend-server
+          cache_key: go-mod-server-{{ .Environment.CACHE_KEY }}-{{ checksum "server/frontend/go.mod" }}
+          cache_version: go-mod-server-{{ .Environment.CACHE_KEY }}
+          working_dir: server/frontend
+      - build-server:
+          name: build-backend-server
+          cache_key: go-mod-server-{{ .Environment.CACHE_KEY }}-{{ checksum "server/backend/go.mod" }}
+          cache_version: go-mod-server-{{ .Environment.CACHE_KEY }}
+          working_dir: server/backend
       - build-client
       - deploy:
+          name: deploy-frontend
           pre-steps:
             - gcp_cli_initialize
           requires:
-            - build-server
+            - build-frontend-server
             - build-client
+          yaml_name: app.yaml
+          working_dir: server/frontend
+      - deploy:
+          name: deploy-backend
+          pre-steps:
+            - gcp_cli_initialize
+          requires:
+            - build-backend-server
+          yaml_name: backend.yaml
+          working_dir: server/backend
