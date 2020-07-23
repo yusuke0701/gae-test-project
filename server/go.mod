@@ -1,6 +1,6 @@
 module github.com/yusuke0701/gae-test-project
 
-go 1.12
+go 1.13
 
 require (
 	cloud.google.com/go/datastore v1.1.0

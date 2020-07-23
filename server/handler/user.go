@@ -6,7 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/yusuke0701/gae-test-project/model"
+	"github.com/yusuke0701/gae-test-project/db/datastore/model"
 	"github.com/yusuke0701/goutils/firebase"
 	"github.com/yusuke0701/goutils/gcp"
 )
