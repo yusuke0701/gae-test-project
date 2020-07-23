@@ -6,30 +6,30 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/yusuke0701/gae-test-project/db/datastore/model"
-	"github.com/yusuke0701/gae-test-project/db/datastore/store"
+	"github.com/yusuke0701/gae-test-project/backend/db/datastore/model"
+	"github.com/yusuke0701/gae-test-project/backend/db/datastore/store"
 	errs "github.com/yusuke0701/goutils/error"
 	"github.com/yusuke0701/goutils/gcp"
 )
 
-// Tags is handler bundle
-func Tags(g *gin.RouterGroup) {
-	g.POST("", insertTag)
-	g.GET("/:tag_id", getTag)
-	g.GET("", listTag)
-	g.PUT("/:tag_id", updateTag)
-	g.DELETE("/:tag_id", deleteTag)
+// Threads is handler bundle
+func Threads(g *gin.RouterGroup) {
+	g.POST("", insertThread)
+	g.GET("/:thread_id", getThread)
+	g.GET("", listThread)
+	g.PUT("/:thread_id", updateThread)
+	g.DELETE("/:thread_id", deleteThread)
 }
 
-func insertTag(ctx *gin.Context) {
-	tag := new(model.Tag)
-	if err := ctx.Bind(tag); err != nil {
+func insertThread(ctx *gin.Context) {
+	thread := new(model.Thread)
+	if err := ctx.Bind(thread); err != nil {
 		gcp.LogError(ctx.Request.Context(), err.Error)
 		ctx.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	if err := (&store.Tag{}).Insert(ctx.Request.Context(), tag); err != nil {
+	if err := (&store.Thread{}).Insert(ctx.Request.Context(), thread); err != nil {
 		gcp.LogError(ctx.Request.Context(), err.Error)
 		switch err.(type) {
 		case *errs.ErrConflict:
@@ -39,18 +39,13 @@ func insertTag(ctx *gin.Context) {
 		}
 		return
 	}
-	ctx.JSON(http.StatusOK, tag)
+	ctx.JSON(http.StatusOK, thread)
 }
 
-func getTag(ctx *gin.Context) {
-	tagID, err := paramParser.tagID(ctx)
-	if err != nil {
-		gcp.LogError(ctx.Request.Context(), err.Error)
-		ctx.String(http.StatusBadRequest, err.Error())
-		return
-	}
+func getThread(ctx *gin.Context) {
+	threadID := paramParser.threadID(ctx)
 
-	tag, err := (&store.Tag{}).Get(ctx.Request.Context(), tagID)
+	thread, err := (&store.Thread{}).Get(ctx.Request.Context(), threadID)
 	if err != nil {
 		gcp.LogError(ctx.Request.Context(), err.Error)
 		switch err.(type) {
@@ -61,41 +56,36 @@ func getTag(ctx *gin.Context) {
 		}
 		return
 	}
-	ctx.JSON(http.StatusOK, tag)
+	ctx.JSON(http.StatusOK, thread)
 }
 
-func listTag(ctx *gin.Context) {
-	tags, err := (&store.Tag{}).List(ctx.Request.Context())
+func listThread(ctx *gin.Context) {
+	threads, err := (&store.Thread{}).List(ctx.Request.Context())
 	if err != nil {
 		gcp.LogError(ctx.Request.Context(), err.Error)
 		ctx.String(http.StatusInternalServerError, err.Error())
 		return
 	}
-	ctx.JSON(http.StatusOK, tags)
+	ctx.JSON(http.StatusOK, threads)
 }
 
-func updateTag(ctx *gin.Context) {
-	tag := new(model.Tag)
-	if err := ctx.Bind(tag); err != nil {
+func updateThread(ctx *gin.Context) {
+	thread := new(model.Thread)
+	if err := ctx.Bind(thread); err != nil {
 		gcp.LogError(ctx.Request.Context(), err.Error)
 		ctx.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	tagID, err := paramParser.tagID(ctx)
-	if err != nil {
-		gcp.LogError(ctx.Request.Context(), err.Error)
-		ctx.String(http.StatusBadRequest, err.Error())
-		return
-	}
-	if tagID != tag.ID {
-		err := fmt.Errorf("invalid id. paramID = %d, bodyId = %d", tagID, tag.ID)
+	threadID := paramParser.threadID(ctx)
+	if threadID != thread.ID {
+		err := fmt.Errorf("invalid id. paramID = %s, bodyId = %s", threadID, thread.ID)
 		gcp.LogError(ctx.Request.Context(), err.Error)
 		ctx.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	if err := (&store.Tag{}).Update(ctx.Request.Context(), tag); err != nil {
+	if err := (&store.Thread{}).Update(ctx.Request.Context(), thread); err != nil {
 		gcp.LogError(ctx.Request.Context(), err.Error)
 		switch err.(type) {
 		case *errs.ErrNotFound:
@@ -107,18 +97,13 @@ func updateTag(ctx *gin.Context) {
 		}
 		return
 	}
-	ctx.JSON(http.StatusOK, tag)
+	ctx.JSON(http.StatusOK, thread)
 }
 
-func deleteTag(ctx *gin.Context) {
-	tagID, err := paramParser.tagID(ctx)
-	if err != nil {
-		gcp.LogError(ctx.Request.Context(), err.Error)
-		ctx.String(http.StatusBadRequest, err.Error())
-		return
-	}
+func deleteThread(ctx *gin.Context) {
+	threadID := paramParser.threadID(ctx)
 
-	if err := (&store.Tag{}).Delete(ctx.Request.Context(), tagID); err != nil {
+	if err := (&store.Thread{}).Delete(ctx.Request.Context(), threadID); err != nil {
 		gcp.LogError(ctx.Request.Context(), err.Error)
 		switch err.(type) {
 		case *errs.ErrNotFound:

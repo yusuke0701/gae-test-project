@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/yusuke0701/gae-test-project/handler"
+	"github.com/yusuke0701/gae-test-project/backend/handler"
 	"github.com/yusuke0701/goutils/gcp"
 )
 
