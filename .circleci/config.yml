@@ -97,8 +97,6 @@ jobs:
   deploy:
     executor: gcloud-executor
     parameters:
-      yaml_name:
-        type: string
       working_dir:
         type: string
     steps:
@@ -111,7 +109,7 @@ jobs:
           command: |
             PROJECT=$(gcloud config list --format="value(core.project)")
             VERSION=$(git rev-parse --short=8 HEAD)
-            gcloud app deploy --quiet << parameters.yaml_name >> ../dispatch.yaml --project=$PROJECT --version=$VERSION
+            gcloud app deploy --quiet ../dispatch.yaml --project=$PROJECT --version=$VERSION
           working_directory: << parameters.working_dir >>
 
 # workflows
@@ -136,7 +134,6 @@ workflows:
           requires:
             - build-frontend-server
             - build-client
-          yaml_name: app.yaml
           working_dir: server/frontend
       - deploy:
           name: deploy-backend
@@ -144,5 +141,4 @@ workflows:
             - gcp_cli_initialize
           requires:
             - build-backend-server
-          yaml_name: backend.yaml
           working_dir: server/backend

@@ -14,9 +14,7 @@ var datastoreClient *datastore.Client
 func init() {
 	ctx := context.Background()
 
-	projectID, _ := gcp.GetGAEVar()
-
-	dc, err := datastore.NewClient(ctx, projectID)
+	dc, err := datastore.NewClient(ctx, gcp.ProjectID)
 	if err != nil {
 		log.Fatalf("Failed to connect datastore: %v", err)
 	}
