@@ -13,7 +13,7 @@ export DATASTORE_EMULATOR_HOST_PATH=localhost:8081/datastore
 export DATASTORE_HOST=http://localhost:8081
 export DATASTORE_PROJECT_ID=hoge-hoge-123456789
 
-cd ./../modules/backend
+cd ./../backend
 # TODO: gin を使って live-reloading したいが下記issueと同様のエラーが出る
 # https://github.com/codegangsta/gin/issues/152
 go run main.go
