@@ -1,0 +1,25 @@
+version: "3.7"
+services:
+  db:
+    image: google/cloud-sdk:latest
+    environment:
+      CLOUDSDK_CORE_PROJECT: hoge-hoge-123456789
+    ports:
+      - 8081:8081
+    entrypoint: "/bin/sh -c 'gcloud beta emulators datastore start'"
+  api:
+    image: golang:1.13-alpine
+    environment:
+      GOOGLE_CLOUD_PROJECT: hoge-hoge-123456789
+      DATASTORE_DATASET: hoge-hoge-123456789
+      DATASTORE_EMULATOR_HOST: db:8081
+      DATASTORE_EMULATOR_HOST_PATH: db:8081/datastore
+      DATASTORE_HOST: http://db:8081
+      DATASTORE_PROJECT_ID: hoge-hoge-123456789
+    volumes:
+      - .:/go/src/app
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    entrypoint: "/bin/sh -c 'cd src/app && go run main.go'"

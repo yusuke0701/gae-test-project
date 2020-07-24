@@ -19,7 +19,6 @@ https://github.com/yusuke0701/gae-test-project/blob/master/README.md#%E9%96%8B%E
 cd ../client
 npm run serve
 
-cd ../server
-./scripts/run_datastore.sh
-./scripts/serve.sh
+cd ../server/backend
+docker-compose up
 ```
