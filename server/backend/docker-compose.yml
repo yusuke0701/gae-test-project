@@ -10,6 +10,7 @@ services:
   api:
     image: golang:1.13-alpine
     environment:
+      PORT: 8000
       GOOGLE_CLOUD_PROJECT: hoge-hoge-123456789
       DATASTORE_DATASET: hoge-hoge-123456789
       DATASTORE_EMULATOR_HOST: db:8081
@@ -18,8 +19,10 @@ services:
       DATASTORE_PROJECT_ID: hoge-hoge-123456789
     volumes:
       - .:/go/src/app
+      - $GOPATH/bin:/go/bin
+      - $GOPATH/pkg:/go/pkg
     ports:
       - 8080:8080
     depends_on:
       - db
-    entrypoint: "/bin/sh -c 'cd src/app && go run main.go'"
+    entrypoint: "/bin/sh -c 'cd src/app && gin -i -a 8000 -p 8080 -- -port 8000'"

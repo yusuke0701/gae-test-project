@@ -14,6 +14,7 @@ import (
 
 // Accounts is handler bundle
 func Accounts(g *gin.RouterGroup) {
+	g.OPTIONS("", optionsAccount)
 	g.POST("", insertAccount)
 	g.GET("/:account_id", getAccount)
 	g.GET("", listAccount)
@@ -22,6 +23,10 @@ func Accounts(g *gin.RouterGroup) {
 
 	g.POST("/login", login)
 	g.POST("/logout", logout)
+}
+
+func optionsAccount(ctx *gin.Context) {
+	ctx.String(http.StatusOK, "OK")
 }
 
 func insertAccount(ctx *gin.Context) {
