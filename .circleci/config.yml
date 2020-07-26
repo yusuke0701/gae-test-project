@@ -107,9 +107,8 @@ jobs:
       - run:
           name: deploy
           command: |
-            PROJECT=$(gcloud config list --format="value(core.project)")
             VERSION=$(git rev-parse --short=8 HEAD)
-            gcloud app deploy --quiet ../dispatch.yaml --project=$PROJECT --version=$VERSION
+            gcloud app deploy --quiet ../dispatch.yaml --project=$GOOGLE_PROJECT_ID --version=$VERSION
           working_directory: << parameters.working_dir >>
 
 # workflows
@@ -129,6 +128,7 @@ workflows:
       - build-client
       - deploy:
           name: deploy-frontend
+          context: gcp
           pre-steps:
             - gcp_cli_initialize
           requires:
@@ -137,6 +137,7 @@ workflows:
           working_dir: server/frontend
       - deploy:
           name: deploy-backend
+          context: gcp
           pre-steps:
             - gcp_cli_initialize
           requires:
